@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import Constants from '../constants/ContactConstants';
+import Constants from '../constants/Constants';
 import OvertimesAPI from '../utils/OvertimesAPI';
 
 export default {

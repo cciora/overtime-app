@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
-import ContactConstants from '../constants/ContactConstants';
+import Constants from '../constants/Constants';
 import { EventEmitter } from 'events';
 
 const CHANGE_EVENT = 'change';
@@ -47,24 +47,24 @@ const ContactStore = new ContactStoreClass();
 ContactStore.dispatchToken = AppDispatcher.register(action => {
 
   switch(action.actionType) {
-    case ContactConstants.RECIEVE_CONTACTS:
+    case Constants.RECIEVE_CONTACTS:
       setContacts(action.contacts);
       // We need to call emitChange so the event listener
       // knows that a change has been made
       ContactStore.emitChange();
       break
 
-    case ContactConstants.RECIEVE_CONTACT:
+    case Constants.RECIEVE_CONTACT:
       setContact(action.contact);
       ContactStore.emitChange();
       break
 
-    case ContactConstants.RECIEVE_CONTACT_ERROR:
+    case Constants.RECIEVE_CONTACT_ERROR:
       alert(action.message);
       ContactStore.emitChange();
       break
 
-    case ContactConstants.RECIEVE_CONTACTS_ERROR:
+    case Constants.RECIEVE_CONTACTS_ERROR:
       alert(action.message);
       ContactStore.emitChange();
       break
