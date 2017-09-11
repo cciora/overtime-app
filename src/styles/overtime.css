@@ -1,0 +1,224 @@
+#overtime {
+  max-width: 1000px;
+  color: #333333;
+}
+
+/** Menu area **/
+.topMenuWraper {
+    width: 100%;
+    background: #DDDDDD;
+    background: -webkit-linear-gradient(#dddddd, #aaaaaa); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#dddddd, #aaaaaa); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#dddddd, #aaaaaa); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#dddddd, #aaaaaa); /* Standard syntax */
+    border: 2px solid #aaaaaa;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.topMenu {
+  display: table;
+  border-spacing: 5px;
+  color: #333333;
+}
+
+.topMenu  > span {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.topMenu .clickable {
+  cursor: pointer;
+}
+
+.topMenu .clickable:hover {
+  background-color: #dddddd;
+}
+
+.addOvertime {
+  background-repeat: no-repeat;
+  background-image: url('../images/add.png');
+  background-position: left;
+  padding-left: 32px;
+  padding-right: 5px;
+}
+
+.userSettings {
+  background-repeat: no-repeat;
+  background-image: url('../images/settings.png');
+  background-position: left;
+  padding-left: 35px;
+  padding-right: 5px;
+}
+
+.excelExport {
+  background-repeat: no-repeat;
+  background-image: url('../images/excel_export.png');
+  background-position: left;
+  padding-left: 35px;
+  padding-right: 5px;
+}
+
+.users {
+  background-repeat: no-repeat;
+  background-image: url('../images/users.png');
+  background-position: left;
+  padding-left: 35px;
+  padding-right: 5px;
+}
+
+.topMenu .separator {
+  width: 1px;
+  background: -webkit-linear-gradient(#bbbbbb, #888888); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#bbbbbb, #888888); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#bbbbbb, #888888); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#bbbbbb, #888888); /* Standard syntax */
+}
+
+.dateFilter {
+  width: 252px;
+  border-spacing: 2px;
+}
+
+.dateFilter .container {
+  display: table-cell;
+  text-align: center;
+  width: 100%;
+}
+
+.dateFilter .arrow {
+  display: table-cell;
+  border: 1px solid #999999;
+  padding: 3px 8px;
+}
+
+.dateFilter .month {
+  display: table-cell;
+  border: 1px solid #999999;
+  padding: 3px;
+  margin: 0px 3px;
+  width: 30px;
+  text-align: center;
+}
+
+.dateFilter .selectedMonth{
+  font-weight: bold;
+  color:#000000;
+}
+
+
+/** Overtime table **/
+table.overtime {
+  width: 100%;
+  table-layout: fixed;
+  border: 2px solid #aaaaaa;
+  border-radius: 5px;
+  border-spacing: 0px;
+  color: #333333;
+}
+
+table.overtime tr.header {
+  background: #DDDDDD;
+  background: -webkit-linear-gradient(#dddddd, #aaaaaa); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#dddddd, #aaaaaa); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#dddddd, #aaaaaa); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#dddddd, #aaaaaa); /* Standard syntax */
+
+}
+
+table.overtime td {
+  border-top: 1px solid #aaaaaa;
+  height: 50px;
+  padding-left: 8px;
+  vertical-align: middle;
+}
+
+table.overtime tr.header > td {
+  font-weight: bold;
+  border-top: 0px;
+}
+
+.rowEdit, .rowDelete {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.rowEdit {
+  background-image: url('../images/edit24.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rowDelete {
+  background-image: url('../images/delete24.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+/** Settings page **/
+.editFormWrapper {
+  border: 2px solid #aaaaaa;
+  border-radius: 5px;
+  padding: 0 20%;
+}
+
+.editForm {
+  width: 100%;
+  display: table;
+  border-spacing: 10px;
+}
+
+.editForm .formRow {
+  display: table-row;
+}
+
+.editForm .formRow > span {
+  display: table-cell;
+  text-align: left;
+  width: 20%;
+}
+
+.editForm .formRow input {
+  line-height: 26px;
+  border-color: #cccccc;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 0px 5px;
+  width: 100%;
+  color: #333333;
+}
+
+.editForm .formRow textarea {
+  width: 100%;
+  padding: 5px;
+  resize: none;
+  color: #333333;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer button {
+  padding: 3px 5px;
+  border: 1px solid #aaaaaa;
+  font-size: 14px;
+  border-radius: 5px;
+  margin: 5px;
+  color: #333333;
+}
+
+.editFormWrapper .validation {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
+/* override style from the date picker component */
+.editForm .react-datepicker__close-icon {
+  display: inline;
+}

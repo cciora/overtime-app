@@ -10,6 +10,8 @@ import ContactDetail from './components/ContactDetail';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
+import OvertimeOverview from './components/OvertimeOverview';
+
 import { Grid, Row, Col } from 'react-bootstrap';
 
 class Root extends Component {
@@ -28,7 +30,8 @@ class Root extends Component {
               <Sidebar />
             </Col>
             <Col xs={12} md={9}>
-              <Route path='/' exact component={Index} />
+              <Route exact path='/' component={OvertimeOverview} />
+              <Route path='/contacts' component={Index} />
               <Route path='/contact/:id' component={ContactDetail} />
             </Col>
           </Row>
