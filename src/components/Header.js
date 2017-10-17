@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 // import AuthActions from '../actions/AuthActions';
 // import AuthStore from '../stores/AuthStore';
 
@@ -42,6 +43,7 @@ class HeaderComponent extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
+          <NavItem><Link to={'/overtime/new'}>New Overtime</Link></NavItem>
           <NavItem onClick={this.login}>Login</NavItem>
           <NavItem onClick={this.logout}>Logout</NavItem>
         </Nav>

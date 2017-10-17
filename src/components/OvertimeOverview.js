@@ -53,7 +53,7 @@ class OvertimeOverview extends Component {
     if(entries.length > 0) {
       rows = entries.map((entry) => {
         return (
-          <OvertimeListItem key={entry.id} row={entry} />
+          <OvertimeListItem key={entry.id} overtime={entry} />
         );
       });
     } else {
