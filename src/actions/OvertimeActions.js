@@ -36,6 +36,23 @@ export default {
           message: message
         });
       });
+  },
+
+  saveOvertime: (data) => {
+    OvertimesAPI
+      .saveOvertime('http://localhost:3001/api/overtimes/save', data)
+      .then(overtime => {
+        AppDispatcher.dispatch({
+          actionType: Constants.SAVE_OVERTIME,
+          overtime: overtime
+        });
+      })
+      .catch(message => {
+        AppDispatcher.dispatch({
+          actionType: Constants.SAVE_OVERTIME_ERROR,
+          message: message
+        });
+      });
   }
   
 }

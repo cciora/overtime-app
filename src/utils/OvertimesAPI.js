@@ -25,5 +25,17 @@ export default {
           resolve(JSON.parse(response.text));
         })
     });
+  },
+
+  saveOvertime: (url, data) => {
+    return new Promise((resolve, reject) => {
+      request
+        .post(url)
+        .send(data)
+        .end((err, response) => {
+          if (err || !response.ok) reject(err);
+          resolve(JSON.parse(response.text));
+        })
+    });
   }
 }

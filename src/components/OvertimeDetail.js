@@ -148,7 +148,9 @@ class OvertimeDetail extends React.Component {
     if(!this.validateComparedToOtherEntries()){
       return;
     }
-    //this.props.saveAction(this.state.overtime);
+    this.setState({validationMessage: ''});
+
+    OvertimeAction.saveOvertime(this.state.overtime);
   }
 
   isWeekday (d) {

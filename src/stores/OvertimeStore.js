@@ -69,6 +69,11 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
         OvertimeStore.emitChange();
         break
 
+    case Constants.SAVE_OVERTIME:
+        setOvertime(action.overtime);
+        OvertimeStore.emitChange();
+        break
+
     default:
   }
 
