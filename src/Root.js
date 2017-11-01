@@ -5,10 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import Index from './components/Index';
-import ContactDetail from './components/ContactDetail';
 import Header from './components/Header';
-import Sidebar from './components/Sidebar';
 
 import OvertimeOverview from './components/OvertimeOverview';
 import OvertimeDetail from './components/OvertimeDetail';
@@ -27,13 +24,8 @@ class Root extends Component {
         <Header lock={this.lock}></Header>
         <Grid>
           <Row>
-            <Col xs={12} md={3}>
-              <Sidebar />
-            </Col>
             <Col xs={12} md={9}>
               <Route exact path='/' component={OvertimeOverview} />
-              <Route path='/contacts' component={Index} />
-              <Route path='/contact/:id' component={ContactDetail} />
               <Route path='/overtime/:id' component={OvertimeDetail} />
             </Col>
           </Row>

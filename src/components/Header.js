@@ -39,7 +39,7 @@ class HeaderComponent extends Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">React Contacts</a>
+            <a href="#">React Overtimes</a>
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
