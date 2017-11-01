@@ -3,6 +3,7 @@ import Constants from '../constants/Constants';
 import { EventEmitter } from 'events';
 
 const CHANGE_EVENT = 'change';
+const SAVE_EVENT = 'save';
 
 let _overtimes = [];
 let _overtime = {};
@@ -27,6 +28,18 @@ class OvertimeStoreClass extends EventEmitter {
 
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback)
+  }
+
+  emitSaveEvent(payload) {
+    this.emit(SAVE_EVENT, payload);
+  }
+
+  addSaveChangeListener(callback) {
+    this.on(SAVE_EVENT, callback);
+  }
+
+  removeSaveChangeListener(callback) {
+    this.removeListener(SAVE_EVENT, callback);
   }
 
   getOvertimes() {
@@ -70,8 +83,11 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
         break
 
     case Constants.SAVE_OVERTIME:
-        setOvertime(action.overtime);
-        OvertimeStore.emitChange();
+        if(action.result.isValid) {
+          setOvertime(action.result.overtime);
+          OvertimeStore.emitChange();
+        }
+        OvertimeStore.emitSaveEvent(action.result);
         break
 
     default:

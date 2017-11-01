@@ -41,10 +41,10 @@ export default {
   saveOvertime: (data) => {
     OvertimesAPI
       .saveOvertime('http://localhost:3001/api/overtimes/save', data)
-      .then(overtime => {
+      .then(result => {
         AppDispatcher.dispatch({
           actionType: Constants.SAVE_OVERTIME,
-          overtime: overtime
+          result: result
         });
       })
       .catch(message => {
