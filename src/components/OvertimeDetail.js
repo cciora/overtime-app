@@ -54,12 +54,10 @@ class OvertimeDetail extends React.Component {
 
   onValidation(payload) {
     if (payload.isValid) {
-      alert('Must redirect!');
-      //TODO: implement
+      this.props.history.push('/');
     } else {
       this.setState({validationMessage: payload.message});
     }
-    
   }
 
   handleOvertimeDateChange(date) {
