@@ -6,7 +6,7 @@ export default {
 
   recieveOvertimes: () => {
     OvertimesAPI
-      .getOvertimes('http://localhost:3001/api/overtimes')
+      .getOvertimes()
       .then(overtimes => {
         AppDispatcher.dispatch({
           actionType: Constants.RECIEVE_OVERTIMES,
@@ -54,5 +54,5 @@ export default {
         });
       });
   }
-  
+
 }
