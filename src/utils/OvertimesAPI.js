@@ -10,7 +10,7 @@ export default {
         .then((response) => {
           resolve(JSON.parse(response.text).data.overtimes);
         }).catch((err) => {
-          reject(err)
+          reject(err);
         })
     });
   },
@@ -20,21 +20,24 @@ export default {
       request
         .get('http://localhost:8080/')
         .query('query=query{overtime (id:'+id+') {id, comment, date, startTime, endTime, freeTimeOn}}')
-        .end((err, response) => {
-          if (err) reject(err);
+        .then((response) => {
           resolve(JSON.parse(response.text).data.overtime);
+        }).catch((err) => {
+          reject(err);
         })
     });
   },
 
-  saveOvertime: (url, data) => {
+  saveOvertime: (data) => {
     return new Promise((resolve, reject) => {
+      let dataStr = 'id: "'+data.id+'", comment: "'+data.comment+'", date: "'+data.date+'", startTime: "'+data.startTime+'", endTime: "'+data.endTime+'", freeTimeOn: "'+data.freeTimeOn+'"';
       request
-        .post(url)
-        .send(data)
-        .end((err, response) => {
-          if (err || !response.ok) reject(err);
+        .post('http://localhost:8080/')
+        .send('query=mutation Mutation { add (' + dataStr + '){id}}')
+        .then((response) => {
           resolve(JSON.parse(response.text));
+        }).catch((err) => {
+          reject(err);
         })
     });
   }
