@@ -23,7 +23,7 @@ export default {
 
   getOvertime: (id) => {
     OvertimesAPI
-      .getOvertime('http://localhost:3001/api/overtimes/' + id)
+      .getOvertime(id)
       .then(overtime => {
         AppDispatcher.dispatch({
           actionType: Constants.RECIEVE_OVERTIME,

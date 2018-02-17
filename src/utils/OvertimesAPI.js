@@ -15,13 +15,14 @@ export default {
     });
   },
 
-  getOvertime: (url) => {
+  getOvertime: (id) => {
     return new Promise((resolve, reject) => {
       request
-        .get(url)
+        .get('http://localhost:8080/')
+        .query('query=query{overtime (id:'+id+') {id, comment, date, startTime, endTime, freeTimeOn}}')
         .end((err, response) => {
           if (err) reject(err);
-          resolve(JSON.parse(response.text));
+          resolve(JSON.parse(response.text).data.overtime);
         })
     });
   },
