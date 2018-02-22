@@ -30,7 +30,11 @@ export default {
 
   saveOvertime: (data) => {
     return new Promise((resolve, reject) => {
-      let dataStr = 'id: "'+data.id+'", comment: "'+data.comment+'", date: "'+data.date+'", startTime: "'+data.startTime+'", endTime: "'+data.endTime+'", freeTimeOn: "'+data.freeTimeOn+'"';
+      let dataStr = '';
+      if (data.id) {
+        dataStr = 'id: "'+data.id+ '", ';
+      }
+      dataStr += 'comment: "'+data.comment+'", date: "'+data.date+'", startTime: "'+data.startTime+'", endTime: "'+data.endTime+'", freeTimeOn: "'+data.freeTimeOn+'"';
       request
         .post('http://localhost:8080/')
         .send('query=mutation Mutation { add (' + dataStr + '){id}}')

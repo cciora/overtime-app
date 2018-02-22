@@ -22,20 +22,33 @@ export default {
   },
 
   getOvertime: (id) => {
-    OvertimesAPI
-      .getOvertime(id)
-      .then(overtime => {
-        AppDispatcher.dispatch({
-          actionType: Constants.RECIEVE_OVERTIME,
-          overtime: overtime
-        });
-      })
-      .catch(message => {
-        AppDispatcher.dispatch({
-          actionType: Constants.RECIEVE_OVERTIME_ERROR,
-          message: message
-        });
+    if(id == 'new') {
+      AppDispatcher.dispatch({
+        actionType: Constants.RECIEVE_OVERTIME,
+        overtime: {
+          // date : getDateString(0),
+          startTime: '18:00',
+          endTime: '18:00',
+          // freeTimeOn: '',
+          // comment: 'HZM Deployment 1'
+        }
       });
+    } else {
+      OvertimesAPI
+        .getOvertime(id)
+        .then(overtime => {
+          AppDispatcher.dispatch({
+            actionType: Constants.RECIEVE_OVERTIME,
+            overtime: overtime
+          });
+        })
+        .catch(message => {
+          AppDispatcher.dispatch({
+            actionType: Constants.RECIEVE_OVERTIME_ERROR,
+            message: message
+          });
+        });
+    }
   },
 
   saveOvertime: (data) => {
