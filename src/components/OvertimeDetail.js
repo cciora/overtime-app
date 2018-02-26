@@ -28,7 +28,7 @@ class OvertimeDetail extends React.Component {
 
   componentWillMount() {
     OvertimeStore.addChangeListener(this.onChange);
-    OvertimeStore.addSaveChangeListener(this.onValidation)
+    OvertimeStore.addSaveChangeListener(this.onValidation);
   }
 
   componentDidMount() {

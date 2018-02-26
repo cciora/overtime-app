@@ -37,12 +37,26 @@ export default {
       dataStr += 'comment: "'+data.comment+'", date: "'+data.date+'", startTime: "'+data.startTime+'", endTime: "'+data.endTime+'", freeTimeOn: "'+data.freeTimeOn+'"';
       request
         .post('http://localhost:8080/')
-        .send('query=mutation Mutation { add (' + dataStr + '){id}}')
+        .send('query=mutation Add { add (' + dataStr + '){id}}')
         .then((response) => {
           resolve(JSON.parse(response.text));
         }).catch((err) => {
           reject(err);
         })
     });
+  },
+
+  deleteOvertime: (id) => {
+    return new Promise((resolve, reject) => {
+      request
+        .post('http://localhost:8080/')
+        .send('query=mutation Delete { delete (id:"'+id+'") {id}}')
+        .then((response) => {
+          resolve(JSON.parse(response.text))
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    })
   }
 }

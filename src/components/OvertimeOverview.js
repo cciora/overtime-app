@@ -24,6 +24,7 @@ class OvertimeOverview extends Component {
 
   componentWillMount() {
     OvertimeStore.addChangeListener(this.onChange);
+    OvertimeStore.addDeleteChangeListener(this.onDelete)
   }
 
   componentDidMount() {
@@ -32,12 +33,17 @@ class OvertimeOverview extends Component {
 
   componentWillUnmount() {
     OvertimeStore.removeChangeListener(this.onChange);
+    OvertimeStore.removeDeleteChangeListener(this.onDelete);
   }
 
   onChange() {
     this.setState({
       overtimeEntries: OvertimeStore.getOvertimes()
     });
+  }
+
+  onDelete(payload) {
+    OvertimeActions.recieveOvertimes();
   }
 
   render() {

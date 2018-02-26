@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OvertimeAction from '../actions/OvertimeActions';
 
 class TableRow extends React.Component {
+  deleteOvertime(id) {
+    OvertimeAction.deleteOvertime(id);
+  }
+
   render() {
     const { overtime } = this.props;
     return (
@@ -15,7 +20,7 @@ class TableRow extends React.Component {
           <Link to={`/overtime/${overtime.id}`}>
             <span className="rowEdit">Edit</span>
           </Link>
-          <span className="rowDelete" onClick={() => this.props.deleteRow(overtime.id)}>Delete</span>
+          <span className="rowDelete" onClick={() => this.deleteOvertime(overtime.id)}>Delete</span>
         </td>
       </tr>
     );

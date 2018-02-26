@@ -28,7 +28,7 @@ export default {
         overtime: {
           // date : getDateString(0),
           startTime: '18:00',
-          endTime: '18:00',
+          endTime: '18:00'
           // freeTimeOn: '',
           // comment: 'HZM Deployment 1'
         }
@@ -66,6 +66,22 @@ export default {
           message: message
         });
       });
+  },
+
+  deleteOvertime: (id) => {
+    OvertimesAPI.deleteOvertime(id)
+    .then(result => {
+      AppDispatcher.dispatch({
+        actionType: Constants.DELETE_OVERTIME,
+        result: result
+      });
+    })
+    .catch(message => {
+      AppDispatcher.dispatch({
+        actionType: Constants.DELETE_OVERTIME_ERROR,
+        message: message
+      })
+    })
   }
 
 }

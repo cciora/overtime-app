@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 
 const CHANGE_EVENT = 'change';
 const SAVE_EVENT = 'save';
+const DELETE_EVENT = 'delete';
 
 let _overtimes = [];
 let _overtime = {};
@@ -40,6 +41,18 @@ class OvertimeStoreClass extends EventEmitter {
 
   removeSaveChangeListener(callback) {
     this.removeListener(SAVE_EVENT, callback);
+  }
+
+  emitDeleteEvent(payload) {
+    this.emit(DELETE_EVENT, payload);
+  }
+
+  addDeleteChangeListener(callback) {
+    this.on(DELETE_EVENT, callback);
+  }
+
+  removeDeleteChangeListener(callback) {
+    this.removeListener(DELETE_EVENT, callback);
   }
 
   getOvertimes() {
@@ -88,6 +101,9 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
           OvertimeStore.emitChange();
         }
         OvertimeStore.emitSaveEvent(action.result);
+        break
+    case Constants.DELETE_OVERTIME:
+        OvertimeStore.emitDeleteEvent(action.result);
         break
 
     default:
