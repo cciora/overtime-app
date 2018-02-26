@@ -53,11 +53,11 @@ class OvertimeDetail extends React.Component {
   }
 
   onValidation(payload) {
-    if (payload.isValid) {
+    //if (payload.isValid) {
       this.props.history.push('/');
-    } else {
-      this.setState({validationMessage: payload.message});
-    }
+    //} else {
+    //  this.setState({validationMessage: payload.message});
+    //}
   }
 
   handleOvertimeDateChange(date) {
