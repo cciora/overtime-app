@@ -19,7 +19,7 @@ export default {
     return new Promise((resolve, reject) => {
       request
         .get('http://localhost:8080/')
-        .query('query=query{overtime (id:'+id+') {id, comment, date, startTime, endTime, freeTimeOn}}')
+        .query('query=query{overtime (id:"'+id+'") {id, comment, date, startTime, endTime, freeTimeOn}}')
         .then((response) => {
           resolve(JSON.parse(response.text).data.overtime);
         }).catch((err) => {
