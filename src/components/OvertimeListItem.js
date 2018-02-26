@@ -4,7 +4,9 @@ import OvertimeAction from '../actions/OvertimeActions';
 
 class TableRow extends React.Component {
   deleteOvertime(id) {
-    OvertimeAction.deleteOvertime(id);
+    if (confirm('Are you sure you want to delete?')) {
+      OvertimeAction.deleteOvertime(id);
+    }
   }
 
   render() {

@@ -102,6 +102,9 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
         }
         OvertimeStore.emitSaveEvent(action.result);
         break
+    case Constants.SAVE_OVERTIME_ERROR:
+        alert("Could not save overtime!");
+        break
     case Constants.DELETE_OVERTIME:
         OvertimeStore.emitDeleteEvent(action.result);
         break

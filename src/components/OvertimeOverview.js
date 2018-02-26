@@ -43,7 +43,11 @@ class OvertimeOverview extends Component {
   }
 
   onDelete(payload) {
-    OvertimeActions.recieveOvertimes();
+    if (payload.errors && payload.errors.length > 0) {
+      alert(payload.errors[0].message)
+    } else {
+      OvertimeActions.recieveOvertimes();
+    }
   }
 
   render() {
