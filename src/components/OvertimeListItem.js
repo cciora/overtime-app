@@ -20,9 +20,9 @@ class TableRow extends React.Component {
         <td>{overtime.comment}</td>
         <td>
           <Link to={`/overtime/${overtime.id}`}>
-            <span className="rowEdit">Edit</span>
+            <span className="rowEdit">&nbsp;</span>
           </Link>
-          <span className="rowDelete" onClick={() => this.deleteOvertime(overtime.id)}>Delete</span>
+          <span className="rowDelete" onClick={() => this.deleteOvertime(overtime.id)}>&nbsp;</span>
         </td>
       </tr>
     );

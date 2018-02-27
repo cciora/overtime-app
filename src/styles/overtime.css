@@ -144,16 +144,17 @@ table.overtime tr.header > td {
   display: inline-block;
   cursor: pointer;
   margin-right: 5px;
+  color: #337ab7;
 }
 
 .rowEdit {
-  background-image: url('../images/edit24.png');
+  background-image: url('/images/edit24.png');
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .rowDelete {
-  background-image: url('../images/delete24.png');
+  background-image: url('/images/delete24.png');
   background-repeat: no-repeat;
   background-position: center;
 }
