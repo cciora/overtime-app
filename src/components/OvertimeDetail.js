@@ -6,7 +6,8 @@ import OvertimeStore from '../stores/OvertimeStore';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import TimeInput from 'time-input';
+import 'rc-time-picker/assets/index.css';
+import TimePicker from 'rc-time-picker';
 
 class OvertimeDetail extends React.Component {
   constructor () {
@@ -68,13 +69,13 @@ class OvertimeDetail extends React.Component {
 
   handleStartTimeChange(val) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.startTime = val;
+    temp.startTime = val.format('HH:mm');
     this.setState({overtime: temp});
   }
 
   handleEndTimeChange(val) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.endTime = val;
+    temp.endTime = val.format('HH:mm');
     this.setState({overtime: temp});
   }
 
@@ -133,11 +134,15 @@ class OvertimeDetail extends React.Component {
           </div>
           <div className="formRow">
             <span>Start Time:</span>
-            <TimeInput value={overtime.startTime} onChange={this.handleStartTimeChange} />
+            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true} 
+              defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')} 
+              onChange={this.handleStartTimeChange}  />
           </div>
           <div className="formRow">
             <span>End Time:</span>
-            <TimeInput value={overtime.endTime} onChange={this.handleEndTimeChange} />
+            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true}
+              defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')} 
+              onChange={this.handleEndTimeChange} />
           </div>
           <div className="formRow">
             <span>Free date on:</span>

@@ -3,6 +3,10 @@
   color: #333333;
 }
 
+div.rc-time-picker-panel-select {
+  overflow-x: hidden;
+}
+
 /** Menu area **/
 .topMenuWraper {
     width: 100%;

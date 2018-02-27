@@ -28,7 +28,7 @@ export default {
         overtime: {
           // date : getDateString(0),
           startTime: '18:00',
-          endTime: '18:00'
+          endTime: '19:00'
           // freeTimeOn: '',
           // comment: 'HZM Deployment 1'
         }
