@@ -92,18 +92,18 @@ class OvertimeDetail extends React.Component {
 
   saveHandler() {
     // the date is mandatory
-    // if(!moment(this.state.overtime.date, 'DD.MM.YYYY').isValid()) {
-    //   this.setState({validationMessage: 'Please specify a valid date!'});
-    //   return;
-    // }
-    // if(!this.state.overtime.startTime){
-    //   this.setState({validationMessage: 'Start Time is mandatory!'});
-    //   return;
-    // }
-    // if(!this.state.overtime.endTime){
-    //   this.setState({validationMessage: 'End Time is mandatory!'});
-    //   return;
-    // }
+    if(!moment(this.state.overtime.date, 'DD.MM.YYYY').isValid()) {
+      this.setState({validationMessage: 'Please specify a valid date!'});
+      return;
+    }
+    if(!this.state.overtime.startTime){
+      this.setState({validationMessage: 'Start Time is mandatory!'});
+      return;
+    }
+    if(!this.state.overtime.endTime){
+      this.setState({validationMessage: 'End Time is mandatory!'});
+      return;
+    }
     this.setState({validationMessage: ''});
 
     OvertimeAction.saveOvertime(this.state.overtime);
