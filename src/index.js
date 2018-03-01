@@ -1,10 +1,11 @@
-import 'core-js/fn/object/assign';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { browserHistory } from 'react-router';
-import Root from './Root';
+//import { browserHistory } from 'react-router';
+import Root from './Root'; 
+//import registerServiceWorker from './registerServiceWorker';
 
-require('./styles/overtime.css');
+require('./styles/overtime.css'); 
 
-// Render the main component into the dom
-ReactDOM.render(<Root history={browserHistory} />, document.getElementById('app'));
+//ReactDOM.render(<Root history={browserHistory} />, document.getElementById('app'));
+ReactDOM.render(<Root />, document.getElementById('root'));
+//registerServiceWorker();

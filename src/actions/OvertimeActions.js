@@ -22,7 +22,7 @@ export default {
   },
 
   getOvertime: (id) => {
-    if(id == 'new') {
+    if(id === 'new') {
       AppDispatcher.dispatch({
         actionType: Constants.RECIEVE_OVERTIME,
         overtime: {
