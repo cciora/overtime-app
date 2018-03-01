@@ -39,11 +39,13 @@ class HeaderComponent extends Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={'/'}>React Overtime</Link>
+            <Link to={'/'}>Overtimes</Link>
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <NavItem href="/overtime/new">New Overtime</NavItem>
+          <NavItem>
+            <Link to={'/overtime/new'}>New Overtime</Link>
+          </NavItem>
           <NavItem onClick={this.login}>Login</NavItem>
           <NavItem onClick={this.logout}>Logout</NavItem>
         </Nav>
