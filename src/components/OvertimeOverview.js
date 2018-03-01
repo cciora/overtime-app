@@ -54,10 +54,10 @@ class OvertimeOverview extends Component {
     let entries = [];
     for (let i=0; i< this.state.overtimeEntries.length; i++) {
       const entry = this.state.overtimeEntries[i];
-      const d = moment(entry.date,'DD.MM.YYYY');
-      if(d.month()+1 === this.state.month && d.year() === this.state.year) {
+      // const d = moment(entry.date,'DD.MM.YYYY');
+      // if(d.month()+1 === this.state.month && d.year() === this.state.year) {
         entries.push(entry);
-      }
+      // }
     }
     let rows;
     if(entries.length > 0) {
