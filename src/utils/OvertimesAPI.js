@@ -7,8 +7,8 @@ export default {
   getOvertimes: () => {
     return new Promise((resolve, reject) => {
       request
-        .get(Config.SERVER_URL)
-        .query('query=query{overtimes {id, comment, date, startTime, endTime, freeTimeOn}}')
+        .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
+        .send('query=query{overtimes{id,comment,date,startTime,endTime,freeTimeOn}}')
         .then((response) => {
           resolve(JSON.parse(response.text).data.overtimes);
         }).catch((err) => {
@@ -20,8 +20,8 @@ export default {
   getOvertime: (id) => {
     return new Promise((resolve, reject) => {
       request
-        .get(Config.SERVER_URL)
-        .query('query=query{overtime (id:"'+id+'") {id, comment, date, startTime, endTime, freeTimeOn}}')
+        .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
+        .send('query=query{overtime (id:"'+id+'") {id, comment, date, startTime, endTime, freeTimeOn}}')
         .then((response) => {
           resolve(JSON.parse(response.text).data.overtime);
         }).catch((err) => {
@@ -40,7 +40,7 @@ export default {
       dataStr += Utils.queryParam('endTime', data.endTime);
       dataStr += Utils.queryParam('freeTimeOn', data.freeTimeOn);
       request
-        .post(Config.SERVER_URL)
+        .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
         .send('query=mutation Add { add (' + dataStr + '){id}}')
         .then((response) => {
           resolve(JSON.parse(response.text));
@@ -53,7 +53,7 @@ export default {
   deleteOvertime: (id) => {
     return new Promise((resolve, reject) => {
       request
-        .post(Config.SERVER_URL)
+        .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
         .send('query=mutation Delete { delete (id:"'+id+'") {id}}')
         .then((response) => {
           resolve(JSON.parse(response.text))
