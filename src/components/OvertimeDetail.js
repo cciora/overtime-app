@@ -63,7 +63,7 @@ class OvertimeDetail extends React.Component {
 
   handleOvertimeDateChange(date) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.date = date ? date.format('DD.MM.YYYY') : null;
+    temp.date = date ? date.format('YYYY-MM-DD') : null;
     this.setState({overtime: temp});
   }
 
@@ -81,7 +81,7 @@ class OvertimeDetail extends React.Component {
 
   handleFreeTimeOnDateChange(date) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.freeTimeOn = date ? date.format('DD.MM.YYYY') : null;
+    temp.freeTimeOn = date ? date.format('YYYY-MM-DD') : null;
     this.setState({overtime: temp});
   }
 
@@ -93,7 +93,7 @@ class OvertimeDetail extends React.Component {
 
   saveHandler() {
     // the date is mandatory
-    if(!moment(this.state.overtime.date, 'DD.MM.YYYY').isValid()) {
+    if(!moment(this.state.overtime.date).isValid()) {
       this.setState({validationMessage: 'Please specify a valid date!'});
       return;
     }
@@ -126,9 +126,9 @@ class OvertimeDetail extends React.Component {
         <div className="editForm">
           <div className="formRow">
             <span>Date:</span>
-            <DatePicker selected={overtime.date ? moment(overtime.date,'DD.MM.YYYY') : ''}
+            <DatePicker selected={overtime.date ? moment(overtime.date) : ''}
               onChange={this.handleOvertimeDateChange}
-              className="overtimeDatePicker" dateFormat="DD.MM.YYYY" placeholderText="Date" required="true"
+              className="overtimeDatePicker" dateFormat="YYYY-MM-DD" placeholderText="Date" required="true"
               minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
               filterDate={(this.isWeekday)} />
           </div>
@@ -146,8 +146,8 @@ class OvertimeDetail extends React.Component {
           </div>
           <div className="formRow">
             <span>Free date on:</span>
-            <DatePicker selected={overtime.freeTimeOn ? moment(overtime.freeTimeOn,'DD.MM.YYYY') : ''} onChange={this.handleFreeTimeOnDateChange}
-              className="overtimeDatePicker" dateFormat="DD.MM.YYYY" isClearable="true" placeholderText="Free time on"
+            <DatePicker selected={overtime.freeTimeOn ? moment(overtime.freeTimeOn) : ''} onChange={this.handleFreeTimeOnDateChange}
+              className="overtimeDatePicker" dateFormat="YYYY-MM-DD" isClearable="true" placeholderText="Free time on"
               minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
               filterDate={(this.isWeekday)} />
           </div>
