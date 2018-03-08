@@ -41,7 +41,7 @@ export default {
       dataStr += Utils.queryParam('freeTimeOn', data.freeTimeOn);
       request
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
-        .send('query=mutation Add { add (' + dataStr + '){id}}')
+        .send('query=mutation Add { add (' + dataStr + '){id,date,startTime,endTime,freeTimeOn,comment,user}}')
         .then((response) => {
           resolve(JSON.parse(response.text));
         }).catch((err) => {
@@ -56,7 +56,7 @@ export default {
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
         .send('query=mutation Delete { delete (id:"'+id+'") {id}}')
         .then((response) => {
-          resolve(JSON.parse(response.text))
+          resolve(id);
         })
         .catch((err) => {
           reject(err);

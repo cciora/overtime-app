@@ -6,6 +6,7 @@ const CHANGE_EVENT = 'change';
 const SAVE_EVENT = 'save';
 const DELETE_EVENT = 'delete';
 
+let _hasLoaded = false;
 let _overtimes = [];
 let _overtime = {};
 
@@ -13,8 +14,48 @@ function setOvertimes(overtimes) {
     _overtimes = overtimes;
 }
 
-function setOvertime(overtime) {
-  _overtime = overtime;
+function selectOvertime(overtimeId) {
+  _overtime = null;
+  if (overtimeId == "new") {
+    _overtime = {
+      startTime: '18:00',
+      endTime: '19:00'
+    }
+  } else {
+    for (let i=0; i< _overtimes.length; i++ ) {
+      if(_overtimes[i].id == overtimeId) {
+        _overtime = _overtimes[i];
+        break;
+      }
+    }
+  }
+}
+
+function findOvertimeIdx(overtimeId) {
+  let idx = -1;
+  for (let i=0; i< _overtimes.length; i++ ) {
+    if(_overtimes[i].id == overtimeId) {
+      idx = i;
+      break;
+    }
+  }
+  return idx;
+}
+
+function saveOvertime(overtime) {
+  let idx = findOvertimeIdx(overtime.id);
+  if(idx != -1) {
+    _overtimes.splice(idx,1,overtime);
+  } else {
+    _overtimes.push(overtime);
+  }
+}
+
+function deleteOvertime(overtimeId) {
+  let idx = findOvertimeIdx(overtimeId);
+  if(idx != -1) {
+    _overtimes.splice(idx, 1);
+  }
 }
 
 class OvertimeStoreClass extends EventEmitter {
@@ -35,24 +76,12 @@ class OvertimeStoreClass extends EventEmitter {
     this.emit(SAVE_EVENT, payload);
   }
 
-  addSaveChangeListener(callback) {
+  addSaveListener(callback) {
     this.on(SAVE_EVENT, callback);
   }
 
-  removeSaveChangeListener(callback) {
+  removeSaveListener(callback) {
     this.removeListener(SAVE_EVENT, callback);
-  }
-
-  emitDeleteEvent(payload) {
-    this.emit(DELETE_EVENT, payload);
-  }
-
-  addDeleteChangeListener(callback) {
-    this.on(DELETE_EVENT, callback);
-  }
-
-  removeDeleteChangeListener(callback) {
-    this.removeListener(DELETE_EVENT, callback);
   }
 
   getOvertimes() {
@@ -61,6 +90,10 @@ class OvertimeStoreClass extends EventEmitter {
 
   getOvertime() {
     return _overtime;
+  }
+
+  hasLoaded() {
+    return _hasLoaded;
   }
 
 }
@@ -75,18 +108,9 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
   switch(action.actionType) {
     case Constants.RECIEVE_OVERTIMES:
         setOvertimes(action.overtimes);
+        _hasLoaded = true;
         // We need to call emitChange so the event listener
         // knows that a change has been made
-        OvertimeStore.emitChange();
-        break
-
-    case Constants.RECIEVE_OVERTIME:
-        setOvertime(action.overtime);
-        OvertimeStore.emitChange();
-        break
-
-    case Constants.RECIEVE_OVERTIME_ERROR:
-        alert(action.message);
         OvertimeStore.emitChange();
         break
 
@@ -95,20 +119,25 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
         OvertimeStore.emitChange();
         break
 
-    case Constants.SAVE_OVERTIME:
-        if(action.result.isValid) {
-          setOvertime(action.result.overtime);
-          OvertimeStore.emitChange();
-        }
-        OvertimeStore.emitSaveEvent(action.result);
-        break
-    case Constants.SAVE_OVERTIME_ERROR:
-        alert("Could not save overtime!");
-        break
-    case Constants.DELETE_OVERTIME:
-        OvertimeStore.emitDeleteEvent(action.result);
+    case Constants.SELECT_OVERTIME:
+        selectOvertime(action.overtimeId);
+        OvertimeStore.emitChange();
         break
 
+    case Constants.SAVE_OVERTIME:
+        saveOvertime(action.result.data.add);
+        OvertimeStore.emitSaveEvent();
+        break
+    case Constants.SAVE_OVERTIME_ERROR:
+        alert("Could not save overtime! \n" + action.message);
+        break
+    case Constants.DELETE_OVERTIME:
+        deleteOvertime(action.result);
+        OvertimeStore.emitChange();
+        break
+    case Constants.DELETE_OVERTIME_ERROR:
+        alert("Could not delete overtime!");
+        break
     default:
   }
 

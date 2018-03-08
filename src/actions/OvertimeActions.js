@@ -4,7 +4,7 @@ import OvertimesAPI from '../utils/OvertimesAPI';
 
 export default {
 
-  recieveOvertimes: () => {
+  loadOvertimes: () => {
     OvertimesAPI
       .getOvertimes()
       .then(overtimes => {
@@ -22,33 +22,10 @@ export default {
   },
 
   getOvertime: (id) => {
-    if(id === 'new') {
-      AppDispatcher.dispatch({
-        actionType: Constants.RECIEVE_OVERTIME,
-        overtime: {
-          // date : getDateString(0),
-          startTime: '18:00',
-          endTime: '19:00'
-          // freeTimeOn: '',
-          // comment: 'HZM Deployment 1'
-        }
-      });
-    } else {
-      OvertimesAPI
-        .getOvertime(id)
-        .then(overtime => {
-          AppDispatcher.dispatch({
-            actionType: Constants.RECIEVE_OVERTIME,
-            overtime: overtime
-          });
-        })
-        .catch(message => {
-          AppDispatcher.dispatch({
-            actionType: Constants.RECIEVE_OVERTIME_ERROR,
-            message: message
-          });
-        });
-    }
+    AppDispatcher.dispatch({
+      actionType: Constants.SELECT_OVERTIME,
+      overtimeId: id
+    });
   },
 
   saveOvertime: (data) => {

@@ -12,7 +12,7 @@ class OvertimeOverview extends Component {
     super();
 
     this.state = {
-      overtimeEntries: [],
+      overtimeEntries: OvertimeStore.getOvertimes(),
       month: new Date().getMonth()+1,
       year: new Date().getFullYear()
     };
@@ -24,16 +24,18 @@ class OvertimeOverview extends Component {
 
   componentWillMount() {
     OvertimeStore.addChangeListener(this.onChange);
-    OvertimeStore.addDeleteChangeListener(this.onDelete)
+    // OvertimeStore.addDeleteChangeListener(this.onDelete)
   }
 
   componentDidMount() {
-    OvertimeActions.recieveOvertimes();
+    if(!OvertimeStore.hasLoaded()) {
+        OvertimeActions.loadOvertimes();
+    }
   }
 
   componentWillUnmount() {
     OvertimeStore.removeChangeListener(this.onChange);
-    OvertimeStore.removeDeleteChangeListener(this.onDelete);
+    // OvertimeStore.removeDeleteChangeListener(this.onDelete);
   }
 
   onChange() {
@@ -42,13 +44,13 @@ class OvertimeOverview extends Component {
     });
   }
 
-  onDelete(payload) {
-    if (payload.errors && payload.errors.length > 0) {
-      alert(payload.errors[0].message)
-    } else {
-      OvertimeActions.recieveOvertimes();
-    }
-  }
+  // onDelete(payload) {
+  //   if (payload.errors && payload.errors.length > 0) {
+  //     alert(payload.errors[0].message)
+  //   } else {
+  //     OvertimeActions.recieveOvertimes();
+  //   }
+  // }
 
   render() {
     let entries = [];

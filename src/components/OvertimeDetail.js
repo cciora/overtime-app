@@ -29,7 +29,7 @@ class OvertimeDetail extends React.Component {
 
   componentWillMount() {
     OvertimeStore.addChangeListener(this.onChange);
-    OvertimeStore.addSaveChangeListener(this.onValidation);
+    OvertimeStore.addSaveListener(this.onValidation);
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class OvertimeDetail extends React.Component {
 
   componentWillUnmount() {
     OvertimeStore.removeChangeListener(this.onChange);
-    OvertimeStore.removeSaveChangeListener(this.onValidation);
+    OvertimeStore.removeSaveListener(this.onValidation);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,14 +134,14 @@ class OvertimeDetail extends React.Component {
           </div>
           <div className="formRow">
             <span>Start Time:</span>
-            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true} 
-              defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')} 
+            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true}
+              defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')}
               onChange={this.handleStartTimeChange}  />
           </div>
           <div className="formRow">
             <span>End Time:</span>
             <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true}
-              defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')} 
+              defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')}
               onChange={this.handleEndTimeChange} />
           </div>
           <div className="formRow">
