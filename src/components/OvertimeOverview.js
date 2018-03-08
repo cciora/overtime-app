@@ -6,15 +6,22 @@ import OvertimeListItem from './OvertimeListItem';
 import OvertimeStore from '../stores/OvertimeStore';
 import OvertimeActions from '../actions/OvertimeActions';
 
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+
 class OvertimeOverview extends Component {
 
   constructor() {
     super();
 
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+
     this.state = {
       overtimeEntries: OvertimeStore.getOvertimes(),
-      month: new Date().getMonth()+1,
-      year: new Date().getFullYear()
+      startDateFilter: moment(new Date(y,m,1)),
+      endDateFilter: moment(new Date(y,m+1,0)),
+      focusedInputFilter: null
     };
 
     // We need to bind this to onChange so we can have
@@ -41,6 +48,13 @@ class OvertimeOverview extends Component {
   onChange() {
     this.setState({
       overtimeEntries: OvertimeStore.getOvertimes()
+    });
+  }
+
+  dateFilterChange(filterValue) {
+    this.setState({
+      startDateFilter: filterValue.startDate,
+      endDateFilter: filterValue.endDate
     });
   }
 
@@ -74,12 +88,22 @@ class OvertimeOverview extends Component {
       rows = <tr><td colSpan="6">No data to display!</td></tr>;
     }
     return (
-        <table className="overtime">
-          <tbody>
-            <OvertimeListHeader />
-            {rows}
-          </tbody>
-        </table>
+        <div>
+          <DateRangePicker
+            startDate={this.state.startDateFilter}
+            endDate={this.state.endDateFilter}
+            onDatesChange={({ startDate, endDate }) => this.dateFilterChange({ startDate, endDate })}
+            focusedInput={this.state.focusedInputFilter}
+            onFocusChange={focusedInput => this.setState({ focusedInputFilter:focusedInput })}
+            firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
+            isOutsideRange={() => false}/>
+          <table className="overtime">
+            <tbody>
+              <OvertimeListHeader />
+              {rows}
+            </tbody>
+          </table>
+        </div>
     );
   }
 }
