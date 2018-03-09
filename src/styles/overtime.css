@@ -79,72 +79,9 @@ div.rc-time-picker-panel-select {
   background: linear-gradient(#bbbbbb, #888888); /* Standard syntax */
 }
 
-.dateFilter {
-  width: 252px;
-  border-spacing: 2px;
-}
-
-.dateFilter .container {
-  display: table-cell;
-  text-align: center;
-  width: 100%;
-}
-
-.dateFilter .arrow {
-  display: table-cell;
-  border: 1px solid #999999;
-  padding: 3px 8px;
-}
-
-.dateFilter .month {
-  display: table-cell;
-  border: 1px solid #999999;
-  padding: 3px;
-  margin: 0px 3px;
-  width: 30px;
-  text-align: center;
-}
-
-.dateFilter .selectedMonth{
-  font-weight: bold;
-  color:#000000;
-}
-
-
 /** Overtime table **/
-table.overtime {
-  width: 100%;
-  table-layout: fixed;
-  border: 2px solid #aaaaaa;
-  border-radius: 5px;
-  border-spacing: 0px;
-  color: #333333;
-}
-
-table.overtime tr.header {
-  background: #DDDDDD;
-  background: -webkit-linear-gradient(#dddddd, #aaaaaa); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(#dddddd, #aaaaaa); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(#dddddd, #aaaaaa); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(#dddddd, #aaaaaa); /* Standard syntax */
-
-}
-
-table.overtime td {
-  border-top: 1px solid #aaaaaa;
-  height: 50px;
-  padding-left: 8px;
-  vertical-align: middle;
-}
-
-table.overtime tr.header > td {
-  font-weight: bold;
-  border-top: 0px;
-}
-
 .rowEdit, .rowDelete {
   width: 32px;
-  height: 32px;
   display: inline-block;
   cursor: pointer;
   margin-right: 5px;
@@ -152,13 +89,13 @@ table.overtime tr.header > td {
 }
 
 .rowEdit {
-  background-image: url('/images/edit24.png');
+  background-image: url('/images/edit16.png');
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .rowDelete {
-  background-image: url('/images/delete24.png');
+  background-image: url('/images/delete16.png');
   background-repeat: no-repeat;
   background-position: center;
 }
