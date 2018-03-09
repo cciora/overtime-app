@@ -84,8 +84,14 @@ class OvertimeStoreClass extends EventEmitter {
     this.removeListener(SAVE_EVENT, callback);
   }
 
-  getOvertimes() {
-    return _overtimes;
+  getOvertimes(startDate, endDate) {
+    var startDateStr = startDate.format('YYYY-MM-DD');
+    var endDateStr = endDate.format('YYYY-MM-DD');
+    return _overtimes.filter(overtime => {
+      return startDateStr <= overtime.date && endDateStr >= overtime.date;
+    }).sort((o1,o2) => {
+      return o1.date > o2.date;
+    });
   }
 
   getOvertime() {

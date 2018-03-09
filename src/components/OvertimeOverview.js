@@ -8,7 +8,7 @@ import OvertimeActions from '../actions/OvertimeActions';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 
 class OvertimeOverview extends Component {
 
@@ -16,11 +16,13 @@ class OvertimeOverview extends Component {
     super();
 
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var startDate = moment(new Date(y,m,1));
+    var endDate = moment(new Date(y,m+1,0));
 
     this.state = {
-      overtimeEntries: OvertimeStore.getOvertimes(),
-      startDateFilter: moment(new Date(y,m,1)),
-      endDateFilter: moment(new Date(y,m+1,0)),
+      overtimeEntries: OvertimeStore.getOvertimes(startDate, endDate),
+      startDateFilter: startDate,
+      endDateFilter: endDate,
       focusedInputFilter: null
     };
 
@@ -47,12 +49,13 @@ class OvertimeOverview extends Component {
 
   onChange() {
     this.setState({
-      overtimeEntries: OvertimeStore.getOvertimes()
+      overtimeEntries: OvertimeStore.getOvertimes(this.state.startDateFilter, this.state.endDateFilter)
     });
   }
 
   dateFilterChange(filterValue) {
     this.setState({
+      overtimeEntries: OvertimeStore.getOvertimes(filterValue.startDate, filterValue.endDate),
       startDateFilter: filterValue.startDate,
       endDateFilter: filterValue.endDate
     });
@@ -95,6 +98,7 @@ class OvertimeOverview extends Component {
             onDatesChange={({ startDate, endDate }) => this.dateFilterChange({ startDate, endDate })}
             focusedInput={this.state.focusedInputFilter}
             onFocusChange={focusedInput => this.setState({ focusedInputFilter:focusedInput })}
+            startDateId="startDateFilterId" endDateId="endDateFilterId"
             firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
             isOutsideRange={() => false}/>
           <table className="overtime">
