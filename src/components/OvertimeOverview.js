@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import OvertimeListHeader from './OvertimeListHeader';
-import OvertimeListItem from './OvertimeListItem';
 
 import OvertimeStore from '../stores/OvertimeStore';
 import OvertimeActions from '../actions/OvertimeActions';
@@ -9,6 +7,11 @@ import OvertimeActions from '../actions/OvertimeActions';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
+
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+
+import { Link } from 'react-router-dom';
 
 class OvertimeOverview extends Component {
 
@@ -33,7 +36,6 @@ class OvertimeOverview extends Component {
 
   componentWillMount() {
     OvertimeStore.addChangeListener(this.onChange);
-    // OvertimeStore.addDeleteChangeListener(this.onDelete)
   }
 
   componentDidMount() {
@@ -44,7 +46,6 @@ class OvertimeOverview extends Component {
 
   componentWillUnmount() {
     OvertimeStore.removeChangeListener(this.onChange);
-    // OvertimeStore.removeDeleteChangeListener(this.onDelete);
   }
 
   onChange() {
@@ -61,35 +62,39 @@ class OvertimeOverview extends Component {
     });
   }
 
-  // onDelete(payload) {
-  //   if (payload.errors && payload.errors.length > 0) {
-  //     alert(payload.errors[0].message)
-  //   } else {
-  //     OvertimeActions.recieveOvertimes();
-  //   }
-  // }
+  deleteOvertime(id) {
+    if (window.confirm('Are you sure you want to delete?')) {
+      OvertimeActions.deleteOvertime(id);
+    }
+  }
 
   render() {
-    let entries = [];
-    if(this.state.overtimeEntries) {
-      for (let i=0; i< this.state.overtimeEntries.length; i++) {
-        const entry = this.state.overtimeEntries[i];
-        // const d = moment(entry.date,'DD.MM.YYYY');
-        // if(d.month()+1 === this.state.month && d.year() === this.state.year) {
-          entries.push(entry);
-        // }
-      }
-    }
-    let rows;
-    if(entries.length > 0) {
-      rows = entries.map((entry) => {
-        return (
-          <OvertimeListItem key={entry.id} overtime={entry} />
-        );
-      });
-    } else {
-      rows = <tr><td colSpan="6">No data to display!</td></tr>;
-    }
+    const columns = [{
+      Header: 'Date',
+      accessor: 'date'
+    }, {
+      Header: 'Start Time',
+      accessor: 'startTime'
+    }, {
+      Header: 'End Time',
+      accessor: 'endTime'
+    }, {
+      Header: 'Free time',
+      accessor: 'freeTimeOn'
+    }, {
+      Header: 'Comment',
+      accessor: 'comment'
+    }, {
+      Header: 'Actions',
+      accessor: 'id',
+      Cell: ({value}) => (<span>
+                            <Link to={`/overtime/${value}`}><span className="rowEdit">&nbsp;</span></Link>
+                            <span className="rowDelete" onClick={() => this.deleteOvertime(value)}>&nbsp;</span>
+                          </span>
+                        ),
+      style: {'text-align':'center'}
+    }];
+
     return (
         <div>
           <DateRangePicker
@@ -101,12 +106,11 @@ class OvertimeOverview extends Component {
             startDateId="startDateFilterId" endDateId="endDateFilterId"
             firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
             isOutsideRange={() => false}/>
-          <table className="overtime">
-            <tbody>
-              <OvertimeListHeader />
-              {rows}
-            </tbody>
-          </table>
+
+          <ReactTable defaultPageSize="10"
+            data={this.state.overtimeEntries}
+            columns={columns}
+          />
         </div>
     );
   }
