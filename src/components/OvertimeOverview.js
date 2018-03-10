@@ -88,26 +88,32 @@ class OvertimeOverview extends Component {
       Header: 'Actions',
       accessor: 'id',
       Cell: ({value}) => (<span>
-                            <Link to={`/overtime/${value}`}><span className="rowEdit">&nbsp;</span></Link>
-                            <span className="rowDelete" onClick={() => this.deleteOvertime(value)}>&nbsp;</span>
+                            <Link to={`/overtime/${value}`}><span className="overtimeEdit">&nbsp;</span></Link>
+                            <span className="overtimeDelete" onClick={() => this.deleteOvertime(value)}>&nbsp;</span>
                           </span>
                         ),
-      style: {'text-align':'center'}
+      style: {'textAlign':'center'}
     }];
 
     return (
         <div>
-          <DateRangePicker
-            startDate={this.state.startDateFilter}
-            endDate={this.state.endDateFilter}
-            onDatesChange={({ startDate, endDate }) => this.dateFilterChange({ startDate, endDate })}
-            focusedInput={this.state.focusedInputFilter}
-            onFocusChange={focusedInput => this.setState({ focusedInputFilter:focusedInput })}
-            startDateId="startDateFilterId" endDateId="endDateFilterId"
-            firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
-            isOutsideRange={() => false}/>
+          <div>
+            <DateRangePicker
+              startDate={this.state.startDateFilter}
+              endDate={this.state.endDateFilter}
+              onDatesChange={({ startDate, endDate }) => this.dateFilterChange({ startDate, endDate })}
+              focusedInput={this.state.focusedInputFilter}
+              onFocusChange={focusedInput => this.setState({ focusedInputFilter:focusedInput })}
+              startDateId="startDateFilterId" endDateId="endDateFilterId"
+              firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
+              isOutsideRange={() => false}/>
+          <div style={{'float':'right'}}>
+            <button>XLS Export</button>
+            <button><Link to={"/overtime/new"} className="simpleLink">New Overtime</Link></button>
+          </div>
+          </div>
 
-          <ReactTable defaultPageSize="10"
+          <ReactTable defaultPageSize={10}
             data={this.state.overtimeEntries}
             columns={columns}
           />

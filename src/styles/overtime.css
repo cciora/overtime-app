@@ -55,14 +55,6 @@ div.rc-time-picker-panel-select {
   padding-right: 5px;
 }
 
-.excelExport {
-  background-repeat: no-repeat;
-  background-image: url('/images/excel_export.png');
-  background-position: left;
-  padding-left: 35px;
-  padding-right: 5px;
-}
-
 .users {
   background-repeat: no-repeat;
   background-image: url('/images/users.png');
@@ -79,8 +71,24 @@ div.rc-time-picker-panel-select {
   background: linear-gradient(#bbbbbb, #888888); /* Standard syntax */
 }
 
+.excelExport {
+  background-repeat: no-repeat;
+  background-image: url('/images/excel_export.png');
+  background-position: left;
+  padding-left: 35px;
+  padding-right: 5px;
+  height: 30px;
+  display: inline-block;
+  line-height: 30px;
+}
+
+.simpleLink, .simpleLink:hover {
+  text-decoration: none;
+  color: #515151;
+}
+
 /** Overtime table **/
-.rowEdit, .rowDelete {
+.overtimeEdit, .overtimeDelete {
   width: 32px;
   display: inline-block;
   cursor: pointer;
@@ -88,13 +96,13 @@ div.rc-time-picker-panel-select {
   color: #337ab7;
 }
 
-.rowEdit {
+.overtimeEdit {
   background-image: url('/images/edit16.png');
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.rowDelete {
+.overtimeDelete {
   background-image: url('/images/delete16.png');
   background-repeat: no-repeat;
   background-position: center;
