@@ -69,13 +69,13 @@ class OvertimeDetail extends React.Component {
 
   handleStartTimeChange(val) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.startTime = val.format('HH:mm');
+    temp.startTime = val ? val.format('HH:mm') : '';
     this.setState({overtime: temp});
   }
 
   handleEndTimeChange(val) {
     let temp = Object.assign({}, this.state.overtime);
-    temp.endTime = val.format('HH:mm');
+    temp.endTime = val ? val.format('HH:mm') : '';
     this.setState({overtime: temp});
   }
 
@@ -91,23 +91,69 @@ class OvertimeDetail extends React.Component {
     this.setState({overtime: temp});
   }
 
-  saveHandler() {
+  // function getEntryDurationInMinutes(e) {
+  //   return getTimeStringInMinutes(e.endTime) - getTimeStringInMinutes(e.startTime);
+  // }
+
+  timeStringToMinutes(str) {
+    const time = str.split(':');
+    return parseInt(time[0])*60 + parseInt(time[1]);
+  }
+
+  isValidOvertime() {
     // the date is mandatory
-    if(!moment(this.state.overtime.date).isValid()) {
+    if(!this.state.overtime.date || !moment(this.state.overtime.date).isValid()) {
       this.setState({validationMessage: 'Please specify a valid date!'});
-      return;
+      return false;
     }
     if(!this.state.overtime.startTime){
       this.setState({validationMessage: 'Start Time is mandatory!'});
-      return;
+      return false;
     }
     if(!this.state.overtime.endTime){
       this.setState({validationMessage: 'End Time is mandatory!'});
-      return;
+      return false;
     }
-    this.setState({validationMessage: ''});
 
-    OvertimeAction.saveOvertime(this.state.overtime);
+    // check the time interval is correct (startTime before endTime)
+    const startTime = this.timeStringToMinutes(this.state.overtime.startTime);
+    const endTime = this.timeStringToMinutes(this.state.overtime.endTime);
+    if(endTime <= startTime) {
+      this.setState({validationMessage: 'Start time should be before the end time!'});
+      return false;
+    }
+
+    let totalDuration = endTime - startTime;
+    let overtimes = OvertimeStore.getOvertimes(this.state.overtime.date, this.state.overtime.date);
+    for(let i=0; i<overtimes.length; i++) {
+      let o = overtimes[i];
+      if(o.id != this.state.overtime.id) {
+        const oStartTime = this.timeStringToMinutes(o.startTime);
+        const oEndTime = this.timeStringToMinutes(o.endTime);
+        // check the time interval does not overlap with another one
+        if( (startTime >= oStartTime && startTime < oEndTime)
+              || (oStartTime >= startTime && oStartTime < endTime)
+              || (startTime <= oStartTime && endTime >= oEndTime)
+              || (oStartTime <= startTime && oEndTime >= endTime)){
+          this.setState({validationMessage: 'The current overtime is overlapping with another one!'});
+          return false;
+        }
+        totalDuration += (oEndTime - oStartTime);
+      }
+    }
+      // check there are maximum 3h/day
+    if(totalDuration > 180) {
+      this.setState({validationMessage: 'Total overtime in one day cannot be more than 3h!'});
+      return false;
+    }
+    return true;
+  }
+
+  saveHandler() {
+    if(this.isValidOvertime()) {
+      this.setState({validationMessage: ''});
+      OvertimeAction.saveOvertime(this.state.overtime);
+    }
   }
 
   isWeekday (d) {
