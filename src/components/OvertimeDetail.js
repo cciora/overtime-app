@@ -169,38 +169,36 @@ class OvertimeDetail extends React.Component {
       <div>
       { this.state.overtime &&
       <div className="editFormWrapper">
-        <div className="editForm">
-          <div className="formRow">
-            <span>Date:</span>
-            <DatePicker selected={overtime.date ? moment(overtime.date) : ''}
-              onChange={this.handleOvertimeDateChange}
-              className="overtimeDatePicker" dateFormat="YYYY-MM-DD" placeholderText="Date" required="true"
-              minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
-              filterDate={(this.isWeekday)} />
-          </div>
-          <div className="formRow">
-            <span>Start Time:</span>
-            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true}
-              defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')}
-              onChange={this.handleStartTimeChange}  />
-          </div>
-          <div className="formRow">
-            <span>End Time:</span>
-            <TimePicker showSecond={false} minuteStep={15} inputReadOnly={true}
-              defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')}
-              onChange={this.handleEndTimeChange} />
-          </div>
-          <div className="formRow">
-            <span>Free date on:</span>
-            <DatePicker selected={overtime.freeTimeOn ? moment(overtime.freeTimeOn) : ''} onChange={this.handleFreeTimeOnDateChange}
-              className="overtimeDatePicker" dateFormat="YYYY-MM-DD" isClearable="true" placeholderText="Free time on"
-              minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
-              filterDate={(this.isWeekday)} />
-          </div>
-          <div className="formRow">
-            <span>Comment:</span>
-            <textarea id="comment" rows="6" value={overtime.comment} onChange={this.handleCommentChange} />
-          </div>
+        <div className="row50l">
+          <label for="dateInput">Date:</label>
+          <DatePicker id="dateInput" selected={overtime.date ? moment(overtime.date) : ''}
+            onChange={this.handleOvertimeDateChange}
+            dateFormat="YYYY-MM-DD" placeholderText="Date" required="true"
+            minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
+            filterDate={(this.isWeekday)} />
+        </div>
+        <div className="row50r">
+          <label for="freeTimeOnInput">Free date on:</label>
+          <DatePicker id="freeTimeOnInput" selected={overtime.freeTimeOn ? moment(overtime.freeTimeOn) : ''} onChange={this.handleFreeTimeOnDateChange}
+            className="overtimeDatePicker" dateFormat="YYYY-MM-DD" isClearable="true" placeholderText="Free time on"
+            minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
+            filterDate={(this.isWeekday)} />
+        </div>
+        <div className="row50l">
+          <label for="startTimeInput">Start Time:</label>
+          <TimePicker id="startTimeInput" showSecond={false} minuteStep={15} inputReadOnly={true}
+            defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')}
+            onChange={this.handleStartTimeChange}  />
+        </div>
+        <div className="row50r">
+          <label for="endTimeInput">End Time:</label>
+          <TimePicker id="endTimeInput" showSecond={false} minuteStep={15} inputReadOnly={true}
+            defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')}
+            onChange={this.handleEndTimeChange} />
+        </div>
+        <div className="row100">
+          <label for="commentInput">Comment:</label>
+          <textarea id="commentInput" rows="6" value={overtime.comment} onChange={this.handleCommentChange} />
         </div>
         <div className="footer">
           <button onClick={this.saveHandler}>Save</button>

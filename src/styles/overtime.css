@@ -108,31 +108,36 @@ div.rc-time-picker-panel-select {
   background-position: center;
 }
 
-
-/** Settings page **/
+/** Overtime edit form **/
 .editFormWrapper {
   border: 2px solid #aaaaaa;
   border-radius: 5px;
   padding: 0 20%;
 }
 
-.editForm {
+.row100 {
   width: 100%;
-  display: table;
-  border-spacing: 10px;
+  padding-top: 10px;
+  clear: both;
 }
 
-.editForm .formRow {
-  display: table-row;
+.row50l {
+  width: 45%;
+  float: left;
+  padding-top: 10px;
 }
 
-.editForm .formRow > span {
-  display: table-cell;
-  text-align: left;
-  width: 20%;
+.row50r {
+  width: 45%;
+  float: right;
+  padding-top: 10px;
 }
 
-.editForm .formRow input {
+.editFormWrapper label {
+  display: block;
+}
+
+.editFormWrapper input {
   line-height: 26px;
   border-color: #cccccc;
   border-width: 1px;
@@ -142,11 +147,19 @@ div.rc-time-picker-panel-select {
   color: #333333;
 }
 
-.editForm .formRow textarea {
+.editFormWrapper textarea {
   width: 100%;
   padding: 5px;
   resize: none;
   color: #333333;
+}
+
+.editFormWrapper .rc-time-picker {
+  width: 100%;
+}
+
+.editFormWrapper .react-datepicker-wrapper, .editFormWrapper .react-datepicker-wrapper > div  {
+  width: 100%;
 }
 
 .footer {
@@ -171,4 +184,22 @@ div.rc-time-picker-panel-select {
 /* override style from the date picker component */
 .editForm .react-datepicker__close-icon {
   display: inline;
+}
+
+.react-datepicker__current-month {
+  font-size: 1.2rem;
+}
+
+.react-datepicker__day-names {
+  font-size: 1rem;
+}
+
+.react-datepicker__day-name, .react-datepicker__day {
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+}
+
+.react-datepicker__week {
+  font-size: 1rem;
 }
