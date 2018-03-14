@@ -201,10 +201,14 @@ class OvertimeDetail extends React.Component {
           <textarea id="commentInput" rows="6" value={overtime.comment} onChange={this.handleCommentChange} />
         </div>
         <div className="footer">
-          <button onClick={this.saveHandler}>Save</button>
-          <Link to={'/'}>
-            <button>Cancel</button>
-          </Link>
+          <div>
+            <button onClick={this.saveHandler}>Save</button>
+          </div>
+          <div>
+            <Link to={'/'}>
+              <button>Cancel</button>
+            </Link>
+          </div>
         </div>
         <div className="validation">
           {this.state.validationMessage}

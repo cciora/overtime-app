@@ -110,9 +110,11 @@ div.rc-time-picker-panel-select {
 
 /** Overtime edit form **/
 .editFormWrapper {
-  border: 2px solid #aaaaaa;
-  border-radius: 5px;
-  padding: 0 20%;
+  border: 1px solid #333333;
+  border-radius: 15px;
+  padding: 20px;
+  display: inline-block;
+  border-style: dotted;
 }
 
 .row100 {
@@ -135,11 +137,11 @@ div.rc-time-picker-panel-select {
 
 .editFormWrapper label {
   display: block;
+  color: #5e5e5e;
 }
 
 .editFormWrapper input {
   line-height: 26px;
-  border-color: #cccccc;
   border-width: 1px;
   border-radius: 5px;
   padding: 0px 5px;
@@ -154,25 +156,30 @@ div.rc-time-picker-panel-select {
   color: #333333;
 }
 
-.editFormWrapper .rc-time-picker {
-  width: 100%;
-}
-
-.editFormWrapper .react-datepicker-wrapper, .editFormWrapper .react-datepicker-wrapper > div  {
-  width: 100%;
-}
-
 .footer {
   text-align: center;
+  margin-top: 5px;
+}
+
+.footer>div {
+  float: left;
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+
+.footer>div:first-child {
+  float: left;
+  text-align: left;
 }
 
 .footer button {
   padding: 3px 5px;
-  border: 1px solid #aaaaaa;
+  border: none;
   font-size: 14px;
-  border-radius: 5px;
-  margin: 5px;
   color: #333333;
+  width: 98%;
+  padding: 10px;
 }
 
 .editFormWrapper .validation {
@@ -182,6 +189,14 @@ div.rc-time-picker-panel-select {
 }
 
 /* override style from the date picker component */
+.editFormWrapper .rc-time-picker {
+  width: 100%;
+}
+
+.editFormWrapper .react-datepicker-wrapper, .editFormWrapper .react-datepicker-wrapper > div  {
+  width: 100%;
+}
+
 .editForm .react-datepicker__close-icon {
   display: inline;
 }
