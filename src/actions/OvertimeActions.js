@@ -21,6 +21,24 @@ export default {
       });
   },
 
+  getOvertimeAfterLoad: (id) => {
+    OvertimesAPI
+      .getOvertimes()
+      .then(overtimes => {
+        AppDispatcher.dispatch({
+          actionType: Constants.RECIEVE_OVERTIMES_AND_SELECT,
+          overtimes: overtimes,
+          overtimeId: id
+        });
+      })
+      .catch(message => {
+        AppDispatcher.dispatch({
+          actionType: Constants.RECIEVE_OVERTIMES_ERROR,
+          message: message
+        });
+      });
+  },
+
   getOvertime: (id) => {
     AppDispatcher.dispatch({
       actionType: Constants.SELECT_OVERTIME,

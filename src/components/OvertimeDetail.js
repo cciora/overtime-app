@@ -36,7 +36,11 @@ class OvertimeDetail extends React.Component {
   }
 
   componentDidMount() {
+    if(OvertimeStore.hasLoaded()) {
       OvertimeAction.getOvertime(this.props.match.params.id);
+    } else {
+      OvertimeAction.getOvertimeAfterLoad(this.props.match.params.id);
+    }
   }
 
   componentWillUnmount() {

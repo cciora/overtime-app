@@ -120,6 +120,13 @@ OvertimeStore.dispatchToken = AppDispatcher.register(action => {
         OvertimeStore.emitChange();
         break
 
+    case Constants.RECIEVE_OVERTIMES_AND_SELECT:
+        setOvertimes(action.overtimes);
+        selectOvertime(action.overtimeId);
+        _hasLoaded = true;
+        OvertimeStore.emitChange();
+        break
+
     case Constants.RECIEVE_OVERTIMES_ERROR:
         alert(action.message);
         OvertimeStore.emitChange();
