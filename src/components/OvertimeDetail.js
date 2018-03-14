@@ -15,7 +15,10 @@ class OvertimeDetail extends React.Component {
 
     this.state = {
       overtime: {},
-      validationMessage: ''
+      validationMessage: '',
+      invalidDate: false,
+      invalidStartTime: false,
+      invalidEndTime: false
     }
     this.onChange = this.onChange.bind(this);
     this.onValidation = this.onValidation.bind(this);
@@ -101,17 +104,18 @@ class OvertimeDetail extends React.Component {
   }
 
   isValidOvertime() {
+    let invalidInputs = [];
     // the date is mandatory
     if(!this.state.overtime.date || !moment(this.state.overtime.date).isValid()) {
-      this.setState({validationMessage: 'Please specify a valid date!'});
+      this.setState({validationMessage: 'Please specify a valid date!', invalidDate: true, invalidStartTime: false, invalidEndTime: false});
       return false;
     }
     if(!this.state.overtime.startTime){
-      this.setState({validationMessage: 'Start Time is mandatory!'});
+      this.setState({validationMessage: 'Start Time is mandatory!', invalidDate: false, invalidStartTime: true, invalidEndTime: false});
       return false;
     }
     if(!this.state.overtime.endTime){
-      this.setState({validationMessage: 'End Time is mandatory!'});
+      this.setState({validationMessage: 'End Time is mandatory!', invalidDate: false, invalidStartTime: false, invalidEndTime: true});
       return false;
     }
 
@@ -119,7 +123,7 @@ class OvertimeDetail extends React.Component {
     const startTime = this.timeStringToMinutes(this.state.overtime.startTime);
     const endTime = this.timeStringToMinutes(this.state.overtime.endTime);
     if(endTime <= startTime) {
-      this.setState({validationMessage: 'Start time should be before the end time!'});
+      this.setState({validationMessage: 'Start time should be before the end time!', invalidDate: false, invalidStartTime: true, invalidEndTime: true});
       return false;
     }
 
@@ -135,7 +139,7 @@ class OvertimeDetail extends React.Component {
               || (oStartTime >= startTime && oStartTime < endTime)
               || (startTime <= oStartTime && endTime >= oEndTime)
               || (oStartTime <= startTime && oEndTime >= endTime)){
-          this.setState({validationMessage: 'The current overtime is overlapping with another one!'});
+          this.setState({validationMessage: 'The current overtime is overlapping with another one!', invalidDate: true, invalidStartTime: true, invalidEndTime: true});
           return false;
         }
         totalDuration += (oEndTime - oStartTime);
@@ -143,7 +147,7 @@ class OvertimeDetail extends React.Component {
     }
       // check there are maximum 3h/day
     if(totalDuration > 180) {
-      this.setState({validationMessage: 'Total overtime in one day cannot be more than 3h!'});
+      this.setState({validationMessage: 'Total overtime in one day cannot be more than 3h!', invalidDate: false, invalidStartTime: true, invalidEndTime: true});
       return false;
     }
     return true;
@@ -173,6 +177,7 @@ class OvertimeDetail extends React.Component {
           <label for="dateInput">Date:</label>
           <DatePicker id="dateInput" selected={overtime.date ? moment(overtime.date) : ''}
             onChange={this.handleOvertimeDateChange}
+            className={this.state.invalidDate ? 'error' : ''}
             dateFormat="YYYY-MM-DD" placeholderText="Date" required="true"
             minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)}
             filterDate={(this.isWeekday)} />
@@ -188,12 +193,14 @@ class OvertimeDetail extends React.Component {
           <label for="startTimeInput">Start Time:</label>
           <TimePicker id="startTimeInput" showSecond={false} minuteStep={15} inputReadOnly={true}
             defaultValue={moment('18:00','HH:mm')} value={moment(overtime.startTime,'HH:mm')}
+            className={this.state.invalidStartTime ? 'error' : ''}
             onChange={this.handleStartTimeChange}  />
         </div>
         <div className="row50r">
           <label for="endTimeInput">End Time:</label>
           <TimePicker id="endTimeInput" showSecond={false} minuteStep={15} inputReadOnly={true}
             defaultValue={moment('19:00','HH:mm')} value={moment(overtime.endTime,'HH:mm')}
+            className={this.state.invalidEndTime ? 'error' : ''}
             onChange={this.handleEndTimeChange} />
         </div>
         <div className="row100">

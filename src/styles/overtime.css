@@ -110,7 +110,7 @@ div.rc-time-picker-panel-select {
 
 /** Overtime edit form **/
 .editFormWrapper {
-  border: 1px solid #333333;
+  border: 1px solid #bbbbbb;
   border-radius: 15px;
   padding: 20px;
   display: inline-block;
@@ -158,6 +158,10 @@ div.rc-time-picker-panel-select {
   border-radius: 5px;
 }
 
+.error, .error>input {
+  border-color: red !important;
+}
+
 .footer {
   text-align: center;
   margin-top: 5px;
@@ -186,8 +190,12 @@ div.rc-time-picker-panel-select {
 
 .editFormWrapper .validation {
   text-align: center;
+  width: 100%;
+  display: inline-block;
+  font-family: monospace;
   color: red;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 /* override style from the date picker component */
