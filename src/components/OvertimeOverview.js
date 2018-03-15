@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import OvertimeStore from '../stores/OvertimeStore';
 import OvertimeActions from '../actions/OvertimeActions';
+import ExcelExport from './ExcelExport';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -108,7 +109,7 @@ class OvertimeOverview extends Component {
               firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
               isOutsideRange={() => false}/>
           <div style={{'float':'right'}}>
-            <button>XLS Export</button>
+            <ExcelExport overtimes={this.state.overtimeEntries} />
             <button><Link to={"/overtime/new"} className="simpleLink">New Overtime</Link></button>
           </div>
           </div>
