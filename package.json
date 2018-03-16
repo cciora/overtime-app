@@ -10,7 +10,6 @@
     "rc-time-picker": "^3.3.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.3",
-    "react-data-export": "^0.3.2",
     "react-datepicker": "^0.56.0",
     "react-dates": "^16.3.6",
     "react-dom": "^16.2.0",
@@ -19,7 +18,8 @@
     "react-scripts": "1.1.1",
     "react-table": "^6.8.0",
     "superagent": "^3.6.0",
-    "time-input": "^1.5.1"
+    "time-input": "^1.5.1",
+    "xlsx": "^0.12.5"
   },
   "scripts": {
     "start": "react-scripts start",

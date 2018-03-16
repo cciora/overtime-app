@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import OvertimeStore from '../stores/OvertimeStore';
 import OvertimeActions from '../actions/OvertimeActions';
-import ExcelExport from './ExcelExport';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -13,6 +12,9 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import { Link } from 'react-router-dom';
+
+import * as XLSX from 'xlsx';
+import {saveAs} from 'file-saver';
 
 class OvertimeOverview extends Component {
 
@@ -69,6 +71,102 @@ class OvertimeOverview extends Component {
     }
   }
 
+  strToArrBuffer(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i != s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+  }
+
+  //TODO: also used in overtimeDetails. Extract it in an utils function.
+  timeStringToMinutes(str) {
+    const time = str.split(':');
+    return parseInt(time[0])*60 + parseInt(time[1]);
+  }
+
+  dateStringToXlsDate(str) {
+    if(str) {
+      const date = str.split('-');
+      return "DATE(" + date[0] + "," + parseInt(date[1]) + "," + date[2] + ")";
+    }
+    return null;
+  }
+
+  exportXlsx() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/template.xlsx', true);
+    xhr.responseType = 'arraybuffer';
+    var strToArrBuffer = this.strToArrBuffer;
+    var timeStringToMinutes = this.timeStringToMinutes;
+    var dateStringToXlsDate = this.dateStringToXlsDate;
+    const thisOvertimes = this.state.overtimeEntries;
+    xhr.onload = function (oEvent) {
+      var arrayBuffer = xhr.response; // Note: not oReq.responseText
+      if (arrayBuffer) {
+        var byteArray = new Uint8Array(arrayBuffer);
+        var byteStr = "";
+        for (var i = 0; i < byteArray.byteLength; i++) {
+          byteStr += String.fromCharCode(byteArray[i]);
+        }
+        const wb = XLSX.read(byteStr, {type:'binary'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        ws["C3"].v="Cristian Sorin Ciora";
+        ws["C4"].z="M/D/YYYY";
+        ws["A28"].v="Cristian Sorin Ciora";
+        ws["D28"].v="Alexandar Nestorovici";
+        ws["G28"].v="Marius Pentek";
+        var rowIdx = 8;
+        for(var i=0; i<thisOvertimes.length; i++){
+          var o = thisOvertimes[i];
+          ws["A"+rowIdx] = {
+            t: "n",
+            f: dateStringToXlsDate(o.date),
+            z: "M/D/YYYY"
+          };
+          ws["C"+rowIdx] = {
+            t: "n",
+            v: timeStringToMinutes(o.startTime)/1440,
+            z: "H:MM;@"
+          };
+          ws["D"+rowIdx] = {
+            t: "n",
+            v: timeStringToMinutes(o.endTime)/1440,
+            z: "H:MM;@"
+          };
+          ws["E"+rowIdx] = {
+            t: "n",
+            f: "D"+rowIdx+"-C"+rowIdx,
+            z: "H:MM;@"
+          };
+          var freeTimeOnFormula = dateStringToXlsDate(o.freeTimeOn);
+          if(freeTimeOnFormula) {
+            ws["F"+rowIdx] = {
+              t: "n",
+              f: freeTimeOnFormula,
+              z: "M/D/YYYY"
+            };
+          }
+          ws["G"+rowIdx] = {
+            t: "s",
+            v: o.comment
+          };
+          rowIdx++;
+        }
+        ws["E25"] = {
+          t: "n",
+          f: "SUM(E8:E21)",
+          z: "H:MM;@"
+        };
+
+        const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+        saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), "result.xlsx");
+      }
+    };
+    xhr.send();
+  }
+
   render() {
     const columns = [{
       Header: 'Date',
@@ -109,7 +207,7 @@ class OvertimeOverview extends Component {
               firstDayOfWeek={1} displayFormat="YYYY-MM-DD"
               isOutsideRange={() => false}/>
           <div style={{'float':'right'}}>
-            <ExcelExport overtimes={this.state.overtimeEntries} />
+            <button onClick={() => this.exportXlsx()}>Export XLSX</button>
             <button><Link to={"/overtime/new"} className="simpleLink">New Overtime</Link></button>
           </div>
           </div>
