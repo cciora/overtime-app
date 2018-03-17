@@ -112,11 +112,26 @@ class OvertimeOverview extends Component {
         }
         const wb = XLSX.read(byteStr, {type:'binary'});
         const ws = wb.Sheets[wb.SheetNames[0]];
+
+        var wscols = [
+            {wpx:120},
+            {wpx:60},
+            {wpx:60},
+            {wpx:60},
+            {wpx:80},
+            {wpx:80},
+            {wpx:200}
+        ];
+        ws['!cols'] = wscols;
+        ws['!rows'] = [,,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
+
         ws["C3"].v="Cristian Sorin Ciora";
         ws["C4"].z="M/D/YYYY";
         ws["A28"].v="Cristian Sorin Ciora";
         ws["D28"].v="Alexandar Nestorovici";
         ws["G28"].v="Marius Pentek";
+        ws["G28"].s = { fill: {patternType: "none",fgColor: {rgb: "FF000000"},bgColor: {rgb: "00000000"}} };
+
         var rowIdx = 8;
         for(var i=0; i<thisOvertimes.length; i++){
           var o = thisOvertimes[i];
