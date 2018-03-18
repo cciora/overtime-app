@@ -95,89 +95,82 @@ class OvertimeOverview extends Component {
   }
 
   exportXlsx() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/template.xlsx', true);
-    xhr.responseType = 'arraybuffer';
     var strToArrBuffer = this.strToArrBuffer;
     var timeStringToMinutes = this.timeStringToMinutes;
     var dateStringToXlsDate = this.dateStringToXlsDate;
     const thisOvertimes = this.state.overtimeEntries;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/template.xlsx', true);
+    xhr.responseType = 'arraybuffer';
     xhr.onload = function (oEvent) {
-      var arrayBuffer = xhr.response; // Note: not oReq.responseText
-      if (arrayBuffer) {
-        var byteArray = new Uint8Array(arrayBuffer);
-        var byteStr = "";
-        for (var i = 0; i < byteArray.byteLength; i++) {
-          byteStr += String.fromCharCode(byteArray[i]);
-        }
-        const wb = XLSX.read(byteStr, {type:'binary'});
-        const ws = wb.Sheets[wb.SheetNames[0]];
+      var data = new Uint8Array(xhr.response);
+      const wb = XLSX.read(data, {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
 
-        var wscols = [
-            {wpx:120},
-            {wpx:60},
-            {wpx:60},
-            {wpx:60},
-            {wpx:80},
-            {wpx:80},
-            {wpx:200}
-        ];
-        ws['!cols'] = wscols;
-        ws['!rows'] = [,,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
+      var wscols = [
+          {wpx:120},
+          {wpx:60},
+          {wpx:60},
+          {wpx:60},
+          {wpx:80},
+          {wpx:80},
+          {wpx:200}
+      ];
+      ws['!cols'] = wscols;
+      ws['!rows'] = [,,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
 
-        ws["C3"].v="Cristian Sorin Ciora";
-        ws["C4"].z="M/D/YYYY";
-        ws["A28"].v="Cristian Sorin Ciora";
-        ws["D28"].v="Alexandar Nestorovici";
-        ws["G28"].v="Marius Pentek";
-        ws["G28"].s = { fill: {patternType: "none",fgColor: {rgb: "FF000000"},bgColor: {rgb: "00000000"}} };
+      ws["C3"].v="Cristian Sorin Ciora";
+      ws["C4"].z="M/D/YYYY";
+      ws["A28"].v="Cristian Sorin Ciora";
+      ws["D28"].v="Alexandar Nestorovici";
+      ws["G28"].v="Marius Pentek";
+      ws["G28"].s = { fill: {patternType: "none",fgColor: {rgb: "FF000000"},bgColor: {rgb: "00000000"}} };
 
-        var rowIdx = 8;
-        for(var i=0; i<thisOvertimes.length; i++){
-          var o = thisOvertimes[i];
-          ws["A"+rowIdx] = {
-            t: "n",
-            f: dateStringToXlsDate(o.date),
-            z: "M/D/YYYY"
-          };
-          ws["C"+rowIdx] = {
-            t: "n",
-            v: timeStringToMinutes(o.startTime)/1440,
-            z: "H:MM;@"
-          };
-          ws["D"+rowIdx] = {
-            t: "n",
-            v: timeStringToMinutes(o.endTime)/1440,
-            z: "H:MM;@"
-          };
-          ws["E"+rowIdx] = {
-            t: "n",
-            f: "D"+rowIdx+"-C"+rowIdx,
-            z: "H:MM;@"
-          };
-          var freeTimeOnFormula = dateStringToXlsDate(o.freeTimeOn);
-          if(freeTimeOnFormula) {
-            ws["F"+rowIdx] = {
-              t: "n",
-              f: freeTimeOnFormula,
-              z: "M/D/YYYY"
-            };
-          }
-          ws["G"+rowIdx] = {
-            t: "s",
-            v: o.comment
-          };
-          rowIdx++;
-        }
-        ws["E25"] = {
+      var rowIdx = 8;
+      for(var i=0; i<thisOvertimes.length; i++){
+        var o = thisOvertimes[i];
+        ws["A"+rowIdx] = {
           t: "n",
-          f: "SUM(E8:E21)",
+          f: dateStringToXlsDate(o.date),
+          z: "M/D/YYYY"
+        };
+        ws["C"+rowIdx] = {
+          t: "n",
+          v: timeStringToMinutes(o.startTime)/1440,
           z: "H:MM;@"
         };
-
-        const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
-        saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), "result.xlsx");
+        ws["D"+rowIdx] = {
+          t: "n",
+          v: timeStringToMinutes(o.endTime)/1440,
+          z: "H:MM;@"
+        };
+        ws["E"+rowIdx] = {
+          t: "n",
+          f: "D"+rowIdx+"-C"+rowIdx,
+          z: "H:MM;@"
+        };
+        var freeTimeOnFormula = dateStringToXlsDate(o.freeTimeOn);
+        if(freeTimeOnFormula) {
+          ws["F"+rowIdx] = {
+            t: "n",
+            f: freeTimeOnFormula,
+            z: "M/D/YYYY"
+          };
+        }
+        ws["G"+rowIdx] = {
+          t: "s",
+          v: o.comment
+        };
+        rowIdx++;
       }
+      ws["E25"] = {
+        t: "n",
+        f: "SUM(E8:E21)",
+        z: "H:MM;@"
+      };
+
+      const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+      saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), "result.xlsx");
     };
     xhr.send();
   }
