@@ -13,7 +13,7 @@ import 'react-table/react-table.css';
 
 import { Link } from 'react-router-dom';
 
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-style';
 import {saveAs} from 'file-saver';
 
 class OvertimeOverview extends Component {
@@ -90,6 +90,7 @@ class OvertimeOverview extends Component {
     if(str) {
       const date = str.split('-');
       return "DATE(" + date[0] + "," + parseInt(date[1]) + "," + date[2] + ")";
+      // return date[1] + "/" + date[2] + "/" + date[0];
     }
     return null;
   }
@@ -104,72 +105,62 @@ class OvertimeOverview extends Component {
     xhr.responseType = 'arraybuffer';
     xhr.onload = function (oEvent) {
       var data = new Uint8Array(xhr.response);
-      const wb = XLSX.read(data, {type:'array'});
+      const wb = XLSX.read(data, {type:'array', cellStyles: true, cellFormula: true});
       const ws = wb.Sheets[wb.SheetNames[0]];
 
-      var wscols = [
-          {wpx:120},
-          {wpx:60},
-          {wpx:60},
-          {wpx:60},
-          {wpx:80},
-          {wpx:80},
-          {wpx:200}
-      ];
-      ws['!cols'] = wscols;
-      ws['!rows'] = [,,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
+      // var wscols = [
+      //     {wpx:120},
+      //     {wpx:60},
+      //     {wpx:60},
+      //     {wpx:60},
+      //     {wpx:80},
+      //     {wpx:80},
+      //     {wpx:200}
+      // ];
+      // ws['!cols'] = wscols;
+      //ws['!rows'] = [{hpx:30},,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
 
       ws["C3"].v="Cristian Sorin Ciora";
       ws["C4"].z="M/D/YYYY";
       ws["A28"].v="Cristian Sorin Ciora";
       ws["D28"].v="Alexandar Nestorovici";
       ws["G28"].v="Marius Pentek";
-      ws["G28"].s = { fill: {patternType: "none",fgColor: {rgb: "FF000000"},bgColor: {rgb: "00000000"}} };
+
+      ws["A1"].s.alignment = {horizontal:"center"};
+      ws["C3"].s.alignment = {horizontal:"center"};
+      ws["C4"].s.alignment = {horizontal:"center"};
+      ws["C5"].s.alignment = {horizontal:"center"};
 
       var rowIdx = 8;
       for(var i=0; i<thisOvertimes.length; i++){
         var o = thisOvertimes[i];
-        ws["A"+rowIdx] = {
-          t: "n",
-          f: dateStringToXlsDate(o.date),
-          z: "M/D/YYYY"
-        };
-        ws["C"+rowIdx] = {
-          t: "n",
-          v: timeStringToMinutes(o.startTime)/1440,
-          z: "H:MM;@"
-        };
-        ws["D"+rowIdx] = {
-          t: "n",
-          v: timeStringToMinutes(o.endTime)/1440,
-          z: "H:MM;@"
-        };
-        ws["E"+rowIdx] = {
-          t: "n",
-          f: "D"+rowIdx+"-C"+rowIdx,
-          z: "H:MM;@"
-        };
+        var startValue = timeStringToMinutes(o.startTime)/1440;
+        var endValue = timeStringToMinutes(o.endTime)/1440;
+        ws["A"+rowIdx].f = dateStringToXlsDate(o.date);
+        delete ws["A"+rowIdx].w;
+        ws["C"+rowIdx].v = startValue;
+        ws["D"+rowIdx].v = endValue;
+
+        ws["E"+rowIdx].v = (endValue-startValue);
+        ws["E"+rowIdx].t = "n";
+        ws["E"+rowIdx].z = "H:MM;@";
+
         var freeTimeOnFormula = dateStringToXlsDate(o.freeTimeOn);
         if(freeTimeOnFormula) {
-          ws["F"+rowIdx] = {
-            t: "n",
-            f: freeTimeOnFormula,
-            z: "M/D/YYYY"
-          };
+          ws["F"+rowIdx].v = freeTimeOnFormula;
         }
-        ws["G"+rowIdx] = {
-          t: "s",
-          v: o.comment
-        };
+        ws["G"+rowIdx].v = o.comment;
+        ws["G"+rowIdx].t = "s";
         rowIdx++;
       }
-      ws["E25"] = {
-        t: "n",
-        f: "SUM(E8:E21)",
-        z: "H:MM;@"
-      };
+      console.log(ws);
+      // ws["E25"] = {
+      //   t: "n",
+      //   f: "SUM(E8:E21)",
+      //   z: "H:MM;@"
+      // };
 
-      const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+      const wbout = XLSX.write(wb, {bookType: 'xlsx', type: 'binary', cellStyles: true, cellFormula: true});
       saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), "result.xlsx");
     };
     xhr.send();
