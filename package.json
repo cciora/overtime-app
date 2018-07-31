@@ -20,7 +20,7 @@
     "react-table": "^6.8.0",
     "superagent": "^3.6.0",
     "time-input": "^1.5.1",
-    "xlsx": "^0.12.5",
+    "xlsx": "^0.13.3",
     "xlsx-style": "^0.8.13"
   },
   "scripts": {

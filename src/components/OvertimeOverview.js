@@ -86,20 +86,16 @@ class OvertimeOverview extends Component {
     return parseInt(time[0])*60 + parseInt(time[1]);
   }
 
-  dateStringToXlsDate(str) {
-    if(str) {
-      const date = str.split('-');
-      return "DATE(" + date[0] + "," + parseInt(date[1]) + "," + date[2] + ")";
-      // return date[1] + "/" + date[2] + "/" + date[0];
-    }
-    return null;
+  dateToXlsNumber(d) {
+    return (d - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
   }
 
   exportXlsx() {
     var strToArrBuffer = this.strToArrBuffer;
     var timeStringToMinutes = this.timeStringToMinutes;
-    var dateStringToXlsDate = this.dateStringToXlsDate;
+    var dateToXlsNumber = this.dateToXlsNumber;
     const thisOvertimes = this.state.overtimeEntries;
+    
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/template.xlsx', true);
     xhr.responseType = 'arraybuffer';
@@ -108,59 +104,47 @@ class OvertimeOverview extends Component {
       const wb = XLSX.read(data, {type:'array', cellStyles: true, cellFormula: true});
       const ws = wb.Sheets[wb.SheetNames[0]];
 
-      // var wscols = [
-      //     {wpx:120},
-      //     {wpx:60},
-      //     {wpx:60},
-      //     {wpx:60},
-      //     {wpx:80},
-      //     {wpx:80},
-      //     {wpx:200}
-      // ];
-      // ws['!cols'] = wscols;
-      //ws['!rows'] = [{hpx:30},,,,,,{hpx:28},,,,,,,,,,,,,,,,{hidden:true},{hidden:true},,,];
-
       ws["C3"].v="Cristian Sorin Ciora";
-      ws["C4"].z="M/D/YYYY";
-      ws["A28"].v="Cristian Sorin Ciora";
-      ws["D28"].v="Alexandar Nestorovici";
-      ws["G28"].v="Marius Pentek";
+      ws["C3"].t="s";
+      ws["C4"].v = dateToXlsNumber(new Date());
+      ws["C5"].v = dateToXlsNumber(new Date());
 
-      ws["A1"].s.alignment = {horizontal:"center"};
-      ws["C3"].s.alignment = {horizontal:"center"};
-      ws["C4"].s.alignment = {horizontal:"center"};
-      ws["C5"].s.alignment = {horizontal:"center"};
+      ws["A26"].v="Cristian Sorin Ciora";
+      ws["A26"].t="s";
+      ws["D26"].v="Alexandar Nestorovici";
+      ws["D26"].t="s";
+      ws["G26"].v="Marius Pentek";
+      ws["G26"].t="s";
 
       var rowIdx = 8;
+      var total = 0;
       for(var i=0; i<thisOvertimes.length; i++){
         var o = thisOvertimes[i];
         var startValue = timeStringToMinutes(o.startTime)/1440;
         var endValue = timeStringToMinutes(o.endTime)/1440;
-        ws["A"+rowIdx].f = dateStringToXlsDate(o.date);
-        delete ws["A"+rowIdx].w;
+        
+
+        ws["A"+rowIdx].v = o.date ? dateToXlsNumber(Date.parse(o.date)) : null;
+        ws["B"+rowIdx].v = ws["A"+rowIdx].v;
         ws["C"+rowIdx].v = startValue;
         ws["D"+rowIdx].v = endValue;
-
         ws["E"+rowIdx].v = (endValue-startValue);
-        ws["E"+rowIdx].t = "n";
-        ws["E"+rowIdx].z = "H:MM;@";
 
-        var freeTimeOnFormula = dateStringToXlsDate(o.freeTimeOn);
+        var freeTimeOnFormula = o.freeTimeOn ? dateToXlsNumber(Date.parse(o.freeTimeOn)) : null;
         if(freeTimeOnFormula) {
           ws["F"+rowIdx].v = freeTimeOnFormula;
         }
+
         ws["G"+rowIdx].v = o.comment;
         ws["G"+rowIdx].t = "s";
+
+        total += (endValue - startValue) * 1440;
         rowIdx++;
       }
-      console.log(ws);
-      // ws["E25"] = {
-      //   t: "n",
-      //   f: "SUM(E8:E21)",
-      //   z: "H:MM;@"
-      // };
+      ws["E23"].v = Math.floor(total/60) + ":" + total%60;
+      ws["E23"].t = "s";
 
-      const wbout = XLSX.write(wb, {bookType: 'xlsx', type: 'binary', cellStyles: true, cellFormula: true});
+      const wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
       saveAs(new Blob([strToArrBuffer(wbout)], {type: "application/octet-stream"}), "result.xlsx");
     };
     xhr.send();
