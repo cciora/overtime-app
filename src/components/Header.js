@@ -43,6 +43,7 @@ class HeaderComponent extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
+          <NavItem><Link to={'/settings/'}>Settings</Link></NavItem>
           <NavItem onClick={this.login}>Login</NavItem>
           <NavItem onClick={this.logout}>Logout</NavItem>
         </Nav>

@@ -8,6 +8,7 @@ import Header from './components/Header';
 
 import OvertimeOverview from './components/OvertimeOverview';
 import OvertimeDetail from './components/OvertimeDetail';
+import Settings from './components/Settings';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -26,6 +27,7 @@ class Root extends Component {
             <Col xs={12} md={9}>
               <Route exact path='/' component={OvertimeOverview} />
               <Route path='/overtime/:id' component={OvertimeDetail} />
+              <Route path='/settings' component={Settings} />
             </Col>
           </Row>
         </Grid>

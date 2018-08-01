@@ -149,6 +149,16 @@ div.rc-time-picker-panel-select {
   color: #333333;
 }
 
+.editFormWrapper select {
+  line-height: 26px;
+  height: 28px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  padding: 0px 5px;
+  width: 100%;
+  color: #333333;
+}
+
 .editFormWrapper textarea {
   width: 100%;
   padding: 5px;
