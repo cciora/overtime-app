@@ -9,6 +9,7 @@ import Header from './components/Header';
 import OvertimeOverview from './components/OvertimeOverview';
 import OvertimeDetail from './components/OvertimeDetail';
 import Settings from './components/Settings';
+import Users from './components/Users';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -28,6 +29,7 @@ class Root extends Component {
               <Route exact path='/' component={OvertimeOverview} />
               <Route path='/overtime/:id' component={OvertimeDetail} />
               <Route path='/settings' component={Settings} />
+              <Route path='/users' component={Users} />
             </Col>
           </Row>
         </Grid>
