@@ -21,24 +21,22 @@ export default {
       });
   },
 
-  getUserAfterLoad: (id) => {
-    UsersAPI
-      .getUsers()
-      .then(users => {
-        AppDispatcher.dispatch({
-          actionType: Constants.RECIEVE_USERS_AND_SELECT,
-          users: users,
-          userId: id
-        });
-      })
-      .catch(message => {
-        AppDispatcher.dispatch({
-          actionType: Constants.RECIEVE_USERS_ERROR,
-          message: message
-        });
+  getCurrentUser: (id) => {
+    UsersAPI.getUser(id)
+    .then(user => {
+      AppDispatcher.dispatch({
+        actionType: Constants.GET_CURRENT_USER,
+        user: user
       });
+    })
+    .catch(message => {
+      AppDispatcher.dispatch({
+        actionType: Constants.GET_CURRENT_USER_ERROR,
+        message: message
+      });
+    });
   },
-
+  
   getUser: (id) => {
     AppDispatcher.dispatch({
       actionType: Constants.SELECT_USER,

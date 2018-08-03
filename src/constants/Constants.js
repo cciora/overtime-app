@@ -15,9 +15,10 @@ export default keyMirror({
   SELECT_USER_ERROR: null,
   RECIEVE_USERS: null,
   RECIEVE_USERS_ERROR: null,
-  RECIEVE_USERS_AND_SELECT: null,
   SAVE_USER: null,
   SAVE_USER_ERROR: null,
   DELETE_USER: null,
-  DELETE_USER_ERROR: null
+  DELETE_USER_ERROR: null,
+  GET_CURRENT_USER: null,
+  GET_CURRENT_USER_ERROR: null,
 });

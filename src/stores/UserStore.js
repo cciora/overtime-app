@@ -5,23 +5,18 @@ import { EventEmitter } from 'events';
 const CHANGE_EVENT = 'change';
 const SAVE_EVENT = 'save';
 const DELETE_EVENT = 'delete';
+const CURRENT_USER_LOAD = 'currentUserLoad';
 
 let _hasLoaded = false;
 let _users = [];
-let _user = {};
+let _currentUser = undefined;
 
 function setUsers(users) {
     _users = users;
 }
 
-function selectUser(userId) {
-    _user = null;
-    for (let i=0; i< _users.length; i++ ) {
-        if(_users[i].id === userId) {
-        _users = _users[i];
-        break;
-        }
-    }
+function setCurrentUser(user) {
+    _currentUser = user;
 }
 
 function findUserIdx(userId) {
@@ -77,20 +72,40 @@ class UserStoreClass extends EventEmitter {
     this.removeListener(SAVE_EVENT, callback);
   }
 
+  emitCurrentUserLoad() {
+    this.emit(CURRENT_USER_LOAD);
+  }
+
+  addCurrentUserLoadListener(callback) {
+    this.on(CURRENT_USER_LOAD, callback);
+  }
+
+  removeCurrentUserLoadListener(callback) {
+    this.removeListener(CURRENT_USER_LOAD, callback);
+  }
+
   getUsers() {
     return _users;
   }
 
-  getUser() {
-    return _user;
+  getCurrentUser() {
+    return _currentUser;
+  }
+
+  hasCurrentUser() {
+    return _currentUser != undefined;
   }
 
   hasLoaded() {
     return _hasLoaded;
   }
 
+  getTestCurrentUserId() {
+    return 'ciorac';
+  }
 }
 
+const CURRENT_USER_ID = 'ciorac';
 const UserStore = new UserStoreClass();
 
 // Here we register a callback for the dispatcher
@@ -109,7 +124,7 @@ UserStore.dispatchToken = AppDispatcher.register(action => {
 
     case Constants.RECIEVE_USERS_AND_SELECT:
         setUsers(action.users);
-        selectUser(action.userId);
+        setCurrentUser(action.userId);
         _hasLoaded = true;
         UserStore.emitChange();
         break
@@ -120,7 +135,7 @@ UserStore.dispatchToken = AppDispatcher.register(action => {
         break
 
     case Constants.SELECT_USER:
-        selectUser(action.userId);
+        setCurrentUser(action.userId);
         UserStore.emitChange();
         break
 
@@ -138,6 +153,13 @@ UserStore.dispatchToken = AppDispatcher.register(action => {
     case Constants.DELETE_USER_ERROR:
         alert("Could not delete user!");
         break
+    case Constants.GET_CURRENT_USER:
+        setCurrentUser(action.user);
+        UserStore.emitCurrentUserLoad();
+        break;
+    case Constants.GET_CURRENT_USER_ERROR:
+        alert("Could not obtain the information of the current user! \n");
+        console.error(action.message);
     default:
   }
 
