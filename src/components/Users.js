@@ -1,50 +1,70 @@
 import React from 'react';
 import ReactTable from 'react-table';
 
+import UserStore from '../stores/UserStore';
+import UserActions from '../actions/UserActions';
+
 class Users extends React.Component {
 
     constructor() {
         super();
-        this.state ={users:[
-            {name: "Grozea Maria", isTeamLeader: false, isDirector: false},
-            {name: "Burada Mihai", isTeamLeader: false, isDirector: false},
-            {name: "Onaca Teodora", isTeamLeader: false, isDirector: false},
-            {name: "Rot Radu ", isTeamLeader: false, isDirector: false},
-            {name: "Herman Karina", isTeamLeader: false, isDirector: false},
-            {name: "Ciora Cristian", isTeamLeader: false, isDirector: false},
-            {name: "Pentek Marius", isTeamLeader: false, isDirector: true},
-            {name: "Nestorovici Alexander", isTeamLeader: true, isDirector: false},
-            {name: "Fiat Filip", isTeamLeader: false, isDirector: false},
-            {name: "Dume Marius", isTeamLeader: false, isDirector: false},
-            {name: "Panta Diana", isTeamLeader: false, isDirector: false},
-            {name: "Parta Dana", isTeamLeader: false, isDirector: false},
-            {name: "Leontiuc Silvia", isTeamLeader: false, isDirector: false},
-            {name: "Vidrascu Paul", isTeamLeader: false, isDirector: false},
-            {name: "Mujat Mihai", isTeamLeader: false, isDirector: false},
-            {name: "Mirea Adrian", isTeamLeader: true, isDirector: false},
-        ]};
+        this.state = {
+            users: UserStore.getUsers()
+        };
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    componentWillMount() {
+        UserStore.addChangeListener(this.onChange);
+        UserStore.addSaveListener(this.onChange);
+    }
+
+    componentDidMount() {
+        if(!UserStore.hasLoaded()) {
+            UserActions.loadUsers();
+        }
+    }
+
+    componentWillUnmount() {
+        UserStore.removeChangeListener(this.onChange);
+        UserStore.removeSaveListener(this.onChange);
+    }
+
+    onChange() {
+        this.setState({
+            users: UserStore.getUsers()
+        });
     }
 
     renderEditableCheckbox(cellInfo) {
         return (
-            <input type="checkbox" checked={cellInfo.value} onChange={() => {
-                alert("changed " + cellInfo.column.id);
-                console.log(cellInfo);
+            <input type="checkbox" checked={cellInfo.original.roles.includes(cellInfo.column.id)} onChange={(e) => {
+                var user = cellInfo.original;
+                if(e.target.checked){
+                    user.roles.push(cellInfo.column.id);
+                } else {
+                    user.roles.splice(user.roles.indexOf(cellInfo.column.id),1);
+                }
+                UserActions.saveUser(user);
             }}/>
         );
     }
 
     render() {
         const columns = [{
-            Header: 'Name',
-            accessor: 'name'
+            Header: 'First Name',
+            accessor: 'firstName'
+          }, {
+            Header: 'Last Name',
+            accessor: 'lastName'
           }, {
             Header: 'Is Team Leader',
-            accessor: 'isTeamLeader',
+            accessor: 'TEAM_LEADER',
             Cell: this.renderEditableCheckbox
           }, {
             Header: 'Is Director',
-            accessor: 'isDirector',
+            accessor: 'DIRECTOR',
             Cell: this.renderEditableCheckbox
           }];
         return(

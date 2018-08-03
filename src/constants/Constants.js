@@ -9,5 +9,15 @@ export default keyMirror({
   SAVE_OVERTIME: null,
   SAVE_OVERTIME_ERROR: null,
   DELETE_OVERTIME: null,
-  DELETE_OVERTIME_ERROR: null
+  DELETE_OVERTIME_ERROR: null,
+
+  SELECT_USER: null,
+  SELECT_USER_ERROR: null,
+  RECIEVE_USERS: null,
+  RECIEVE_USERS_ERROR: null,
+  RECIEVE_USERS_AND_SELECT: null,
+  SAVE_USER: null,
+  SAVE_USER_ERROR: null,
+  DELETE_USER: null,
+  DELETE_USER_ERROR: null
 });

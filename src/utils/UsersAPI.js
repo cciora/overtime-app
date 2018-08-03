@@ -4,44 +4,42 @@ import Config from '../config';
 
 export default {
 
-  getOvertimes: () => {
+  getUsers: () => {
     return new Promise((resolve, reject) => {
       request
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
-        .send('query=query{overtimes{id,comment,date,startTime,endTime,freeTimeOn}}')
+        .send('query=query{users{id,firstName,lastName,roles}}')
         .then((response) => {
-          resolve(JSON.parse(response.text).data.overtimes);
+          resolve(JSON.parse(response.text).data.users);
         }).catch((err) => {
           reject(err);
         })
     });
   },
 
-  getOvertime: (id) => {
+  getUser: (id) => {
     return new Promise((resolve, reject) => {
       request
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
-        .send('query=query{overtime (id:"'+id+'") {id, comment, date, startTime, endTime, freeTimeOn}}')
+        .send('query=query{user (id:"'+id+'") {id, firstName, lastName, roles}}')
         .then((response) => {
-          resolve(JSON.parse(response.text).data.overtime);
+          resolve(JSON.parse(response.text).data.user);
         }).catch((err) => {
           reject(err);
         })
     });
   },
 
-  saveOvertime: (data) => {
+  saveUser: (data) => {
     return new Promise((resolve, reject) => {
       let dataStr = '';
       dataStr += Utils.queryParam('id', data.id, true);
-      dataStr += Utils.queryParam('comment', data.comment);
-      dataStr += Utils.queryParam('date', data.date);
-      dataStr += Utils.queryParam('startTime', data.startTime);
-      dataStr += Utils.queryParam('endTime', data.endTime);
-      dataStr += Utils.queryParam('freeTimeOn', data.freeTimeOn);
+      dataStr += Utils.queryParam('firstName', data.firstName);
+      dataStr += Utils.queryParam('lastName', data.lastName);
+      dataStr += Utils.queryParamStrArray('roles', data.roles);
       request
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
-        .send('query=mutation Add { addOvertime (' + dataStr + '){id,date,startTime,endTime,freeTimeOn,comment,user}}')
+        .send('query=mutation AddUser { addUser (' + dataStr + '){id,firstName,lastName,roles}}')
         .then((response) => {
           resolve(JSON.parse(response.text));
         }).catch((err) => {
@@ -50,11 +48,11 @@ export default {
     });
   },
 
-  deleteOvertime: (id) => {
+  deleteUser: (id) => {
     return new Promise((resolve, reject) => {
       request
         .post(Config.SERVER_URL[Config.BACKEND_INSTALLATION_TYPE])
-        .send('query=mutation Delete { deleteOvertime (id:"'+id+'") {id}}')
+        .send('query=mutation DeleteUser { deleteUser (id:"'+id+'") {id}}')
         .then((response) => {
           resolve(id);
         })
